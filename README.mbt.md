@@ -80,6 +80,12 @@ moon test --target native --deny-warn --warn-list +73
 scripts/validate-boundaries.sh
 ~~~
 
+Validated on 2026-11-20 with MoonBit v0.10.15: both native warning-denied
+commands pass with warning 73 enabled, all 99 native tests pass, and the
+dependency/debt boundary check passes. Derived trait methods now have explicit
+method declarations, test-only imports use test scopes, and publication-open
+failure cleanup uses a scoped `errdefer`. No warnings or tests were disabled.
+
 See [the product contract](docs/PRODUCT_CONTRACT.md),
 [architecture](docs/ARCHITECTURE.md), [implementation plan](docs/PLAN.md),
 [debt policy](docs/DEBT_POLICY.md), and
