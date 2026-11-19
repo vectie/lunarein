@@ -1,0 +1,18 @@
+import {
+  "vectie/lunarein/contracts/experiment",
+  "vectie/lunarein/contracts/identity",
+  "vectie/lunarein/contracts/staleness",
+  "vectie/lunarein/orchestrator/cycle",
+  "vectie/lunarein/protocols/rollout",
+}
+
+import {
+  "vectie/lunarein/algorithms/advantage",
+  "vectie/lunarein/algorithms/correction",
+  "vectie/lunarein/contracts/reward",
+  "vectie/lunarein/contracts/trajectory",
+  "vectie/lunarein/contracts/update",
+  "vectie/lunarein/protocols/publication",
+  "vectie/lunarein/protocols/trainer",
+  "vectie/lunarein/protocols/version",
+} for "test"

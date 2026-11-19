@@ -1,0 +1,109 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vectie/lunarein/orchestrator/pipeline"
+
+import {
+  "moonbitlang/core/debug",
+  "vectie/lunarein/contracts/experiment",
+  "vectie/lunarein/contracts/identity",
+  "vectie/lunarein/contracts/staleness",
+  "vectie/lunarein/orchestrator/cycle",
+  "vectie/lunarein/protocols/rollout",
+}
+
+// Values
+
+// Errors
+pub(all) suberror PipelineError {
+  InvalidCapacity
+  InvalidState(expected~ : PipelineState, actual~ : PipelineState)
+  Backpressure
+  ManifestMismatch
+  BrokenLineage
+  UnknownGeneration
+  NoInFlightGeneration
+  RetirementCountExhausted
+  OldestNotRetirable(actual~ : @cycle.CycleState)
+  CommittedSuccessorMismatch
+  InvalidCycleSnapshot
+  CheckpointRequiresQuiescence
+  InvalidCheckpoint
+  Cycle(@cycle.CycleError)
+  Staleness(@staleness.StalenessError)
+} derive(Eq, @debug.Debug)
+
+// Types and methods
+pub struct GenerationSnapshot {
+  // private fields
+} derive(Eq, @debug.Debug)
+pub fn GenerationSnapshot::abort_reason(Self) -> @cycle.CycleAbortReason?
+pub fn GenerationSnapshot::actor(Self) -> @identity.PolicyGeneration
+pub fn GenerationSnapshot::advantage_count(Self) -> Int
+pub fn GenerationSnapshot::committed_policy(Self) -> @identity.PolicyGeneration?
+pub fn GenerationSnapshot::manifest(Self) -> @experiment.ExperimentManifest
+pub fn GenerationSnapshot::rollout_count(Self) -> Int
+pub fn GenerationSnapshot::state(Self) -> @cycle.CycleState
+
+pub struct PipelineOwner {
+  // private fields
+}
+pub fn PipelineOwner::begin_drain(Self) -> Unit raise PipelineError
+pub fn PipelineOwner::cancel_generation(Self, @identity.PolicyGeneration, @cycle.CycleAbortReason) -> Unit raise PipelineError
+pub fn PipelineOwner::checkpoint(Self) -> QuiescentCheckpoint raise PipelineError
+pub fn PipelineOwner::cycle(Self, @identity.PolicyGeneration) -> @cycle.UpdateCycle?
+pub fn PipelineOwner::in_flight_count(Self) -> Int
+pub fn PipelineOwner::last_opened_policy(Self) -> @identity.PolicyGeneration?
+pub fn PipelineOwner::manifest(Self) -> @experiment.ExperimentManifest
+pub fn PipelineOwner::maximum_in_flight(Self) -> Int
+pub fn PipelineOwner::new(manifest~ : @experiment.ExperimentManifest, staleness_policy~ : @staleness.StalenessPolicy) -> Self raise PipelineError
+pub fn PipelineOwner::open_cycle(Self, @experiment.ExperimentManifest, @rollout.RolloutGroupRequest) -> @cycle.UpdateCycle raise PipelineError
+pub fn PipelineOwner::open_stale_cycle(Self, @experiment.ExperimentManifest, @rollout.RolloutGroupRequest, ArrayView[@identity.PolicyGeneration]) -> @cycle.UpdateCycle raise PipelineError
+pub fn PipelineOwner::required_next_policy(Self) -> @identity.PolicyGeneration?
+pub fn PipelineOwner::restore(QuiescentCheckpoint) -> Self raise PipelineError
+pub fn PipelineOwner::retire_oldest(Self) -> RetiredCycle raise PipelineError
+pub fn PipelineOwner::retired_count(Self) -> UInt64
+pub fn PipelineOwner::snapshot(Self) -> PipelineSnapshot raise PipelineError
+pub fn PipelineOwner::staleness_policy(Self) -> @staleness.StalenessPolicy
+pub fn PipelineOwner::state(Self) -> PipelineState
+
+pub struct PipelineSnapshot {
+  // private fields
+} derive(Eq, @debug.Debug)
+pub fn PipelineSnapshot::generation_at(Self, Int) -> GenerationSnapshot raise PipelineError
+pub fn PipelineSnapshot::in_flight_count(Self) -> Int
+pub fn PipelineSnapshot::manifest(Self) -> @experiment.ExperimentManifest
+pub fn PipelineSnapshot::retired_count(Self) -> UInt64
+pub fn PipelineSnapshot::state(Self) -> PipelineState
+
+pub(all) enum PipelineState {
+  Accepting
+  Draining
+  Drained
+} derive(Eq, @debug.Debug)
+
+pub struct QuiescentCheckpoint {
+  // private fields
+} derive(Eq, @debug.Debug)
+pub fn QuiescentCheckpoint::last_opened_policy(Self) -> @identity.PolicyGeneration?
+pub fn QuiescentCheckpoint::manifest(Self) -> @experiment.ExperimentManifest
+pub fn QuiescentCheckpoint::new(manifest~ : @experiment.ExperimentManifest, staleness_policy~ : @staleness.StalenessPolicy, last_opened~ : @identity.PolicyGeneration?, required_next~ : @identity.PolicyGeneration?, retired_count~ : UInt64, state~ : PipelineState) -> Self raise PipelineError
+pub fn QuiescentCheckpoint::required_next_policy(Self) -> @identity.PolicyGeneration?
+pub fn QuiescentCheckpoint::retired_count(Self) -> UInt64
+pub fn QuiescentCheckpoint::staleness_policy(Self) -> @staleness.StalenessPolicy
+pub fn QuiescentCheckpoint::state(Self) -> PipelineState
+
+pub struct RetiredCycle {
+  // private fields
+} derive(Eq, @debug.Debug)
+pub fn RetiredCycle::actor(Self) -> @identity.PolicyGeneration
+pub fn RetiredCycle::advantage_count(Self) -> Int
+pub fn RetiredCycle::outcome(Self) -> RetirementOutcome
+pub fn RetiredCycle::rollout_count(Self) -> Int
+
+pub(all) enum RetirementOutcome {
+  Committed(@identity.PolicyGeneration)
+  Aborted(@cycle.CycleAbortReason)
+} derive(Eq, @debug.Debug)
+
+// Type aliases
+
+// Traits

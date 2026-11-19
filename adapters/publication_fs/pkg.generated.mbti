@@ -1,0 +1,54 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vectie/lunarein/adapters/publication_fs"
+
+import {
+  "moonbitlang/core/debug",
+  "vectie/lunarein/contracts/identity",
+  "vectie/lunarein/protocols/publication",
+}
+
+// Values
+pub fn sha256_bytes(Bytes) -> @identity.Sha256Digest
+
+// Errors
+pub(all) suberror PublicationFsError {
+  Closed
+  InvalidDigestEncoding
+  ChunkEvidenceMismatch
+  ChunkLengthMismatch
+  DuplicateChunk
+  UnexpectedProtocolState
+  PhysicalTargetConflict
+  NativeFailure(operation~ : PublicationFsOperation, status~ : Int)
+  Protocol(@publication.PublicationError)
+} derive(Eq, @debug.Debug)
+
+// Types and methods
+type NativePublicationSession
+
+pub struct PublicationFs {
+  // private fields
+}
+pub fn PublicationFs::acknowledge_rank(Self, Int, @identity.Sha256Digest) -> Unit raise PublicationFsError
+pub fn PublicationFs::begin_transfer(Self) -> Unit raise PublicationFsError
+pub fn PublicationFs::close(Self) -> Unit raise PublicationFsError
+pub fn PublicationFs::commit(Self) -> Unit raise PublicationFsError
+pub fn PublicationFs::committed_publication(Self) -> @publication.PublicationOwner raise PublicationFsError
+pub fn PublicationFs::is_closed(Self) -> Bool
+pub fn PublicationFs::manifest(Self) -> @publication.FullArtifactManifest
+pub fn PublicationFs::open(String, @publication.FullArtifactManifest) -> Self raise PublicationFsError
+pub fn PublicationFs::seal(Self) -> Unit raise PublicationFsError
+pub fn PublicationFs::state(Self) -> @publication.PublicationState
+pub fn PublicationFs::write_chunk(Self, @publication.ArtifactChunkEvidence, Bytes) -> Unit raise PublicationFsError
+
+pub(all) enum PublicationFsOperation {
+  Open
+  InspectExisting
+  WriteChunk
+  Publish
+  Cleanup
+} derive(Eq, @debug.Debug)
+
+// Type aliases
+
+// Traits

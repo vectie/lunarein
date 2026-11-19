@@ -1,0 +1,63 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vectie/lunarein/orchestrator/round"
+
+import {
+  "moonbitlang/core/debug",
+  "vectie/lunarein/algorithms/advantage",
+  "vectie/lunarein/algorithms/correction",
+  "vectie/lunarein/contracts/identity",
+  "vectie/lunarein/contracts/trajectory",
+  "vectie/lunarein/contracts/update",
+}
+
+// Values
+
+// Errors
+pub(all) suberror RoundError {
+  InvalidCapacity
+  InvalidState(expected~ : RoundState, actual~ : RoundState)
+  ForeignPolicy
+  DuplicateRollout
+  UnknownRollout
+  DuplicateAdvantage
+  EvidenceShapeMismatch
+  EmptyRound
+} derive(Eq, @debug.Debug)
+
+// Types and methods
+pub(all) enum RoundAbortReason {
+  RolloutFailure
+  RewardFailure
+  TrainerFailure
+  PublicationFailure
+  OperatorRequested
+} derive(Eq, @debug.Debug)
+
+pub struct RoundOwner {
+  // private fields
+}
+pub fn RoundOwner::abort(Self, RoundAbortReason) -> Unit raise RoundError
+pub fn RoundOwner::abort_reason(Self) -> RoundAbortReason?
+pub fn RoundOwner::accept_advantage(Self, @advantage.AdvantageEvidence) -> Unit raise RoundError
+pub fn RoundOwner::accept_corrected_advantage(Self, @correction.CorrectedAdvantageEvidence) -> Unit raise RoundError
+pub fn RoundOwner::accept_ppo_target(Self, @advantage.PpoTargetEvidence) -> Unit raise RoundError
+pub fn RoundOwner::admit(Self, @trajectory.Trajectory) -> Unit raise RoundError
+pub fn RoundOwner::advantage_count(Self) -> Int
+pub fn RoundOwner::contains_rollout(Self, @identity.RolloutId) -> Bool
+pub fn RoundOwner::new(@identity.PolicyGeneration, Int) -> Self raise RoundError
+pub fn RoundOwner::policy(Self) -> @identity.PolicyGeneration
+pub fn RoundOwner::rollout_count(Self) -> Int
+pub fn RoundOwner::seal_rollouts(Self) -> Unit raise RoundError
+pub fn RoundOwner::state(Self) -> RoundState
+pub fn RoundOwner::training_evidence_matches(Self, @update.TrainingItemRef) -> Bool
+
+pub(all) enum RoundState {
+  CollectingRollouts
+  AwaitingAdvantages
+  ReadyForTraining
+  RoundAborted
+} derive(Eq, @debug.Debug)
+
+// Type aliases
+
+// Traits

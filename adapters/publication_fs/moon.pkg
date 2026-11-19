@@ -1,0 +1,25 @@
+import {
+  "moonbitlang/core/encoding/utf8",
+  "vectie/lunarein/contracts/identity",
+  "vectie/lunarein/contracts/update",
+  "vectie/lunarein/protocols/publication",
+}
+
+supported_targets = "native"
+
+options(
+  "native-stub": [
+    "publication_fs.c",
+    "publication_transport.c",
+    "safetensors.c",
+    "sha256.c",
+    "test_support.c",
+  ],
+  "stub-cc-flags": "-std=c11 -Wall -Wextra -Werror",
+  targets: {
+    "adapter.mbt": [ "native" ],
+    "error.mbt": [ "native" ],
+    "native_ffi.mbt": [ "native" ],
+    "publication_fs_wbtest.mbt": [ "native" ],
+  },
+)

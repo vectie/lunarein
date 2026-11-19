@@ -1,0 +1,100 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vectie/lunarein/orchestrator/cycle"
+
+import {
+  "moonbitlang/core/debug",
+  "vectie/lunarein/algorithms/advantage",
+  "vectie/lunarein/algorithms/correction",
+  "vectie/lunarein/contracts/experiment",
+  "vectie/lunarein/contracts/identity",
+  "vectie/lunarein/contracts/staleness",
+  "vectie/lunarein/contracts/update",
+  "vectie/lunarein/orchestrator/round",
+  "vectie/lunarein/protocols/publication",
+  "vectie/lunarein/protocols/rollout",
+  "vectie/lunarein/protocols/trainer",
+}
+
+// Values
+
+// Errors
+pub(all) suberror CycleError {
+  InvalidState(expected~ : CycleState, actual~ : CycleState)
+  IneligibleRollout
+  DuplicateRolloutResponse
+  IncompleteRolloutSet
+  InsufficientUsableRollouts
+  TokenizerMismatch
+  RequestMismatch
+  ExperimentLimitExceeded
+  ForeignPolicy
+  RewardPolicyMismatch
+  AlgorithmMismatch
+  CorrectionRequired
+  CorrectionMismatch
+  DuplicateGroup
+  DuplicateGroupRollout
+  TrainerLimitExceeded
+  BatchCoverageMismatch
+  TrainingShapeMismatch
+  PublicationNotCommitted
+  PublicationMismatch
+  Round(@round.RoundError)
+  Trainer(@trainer.TrainerProtocolError)
+} derive(Eq, @debug.Debug)
+
+// Types and methods
+pub(all) enum CycleAbortReason {
+  RolloutFailure
+  RewardFailure
+  TrainerFailure
+  PublicationFailure
+  OperatorRequested
+} derive(Eq, @debug.Debug)
+
+pub(all) enum CycleState {
+  GatheringRollouts
+  AwaitingAdvantages
+  ReadyForTraining
+  TrainerPrepared
+  TrainerDispatched
+  CandidateAccepted
+  PolicyCommitted
+  CycleCompleted
+  CycleAborted
+} derive(Eq, @debug.Debug)
+
+pub struct UpdateCycle {
+  // private fields
+}
+pub fn UpdateCycle::abort(Self, CycleAbortReason) -> Unit raise CycleError
+pub fn UpdateCycle::abort_reason(Self) -> CycleAbortReason?
+pub fn UpdateCycle::accept_advantage(Self, @advantage.AdvantageEvidence) -> Unit raise CycleError
+pub fn UpdateCycle::accept_committed_publication(Self, @publication.PublicationOwner) -> Unit raise CycleError
+pub fn UpdateCycle::accept_corrected_advantage(Self, @correction.CorrectedAdvantageEvidence) -> Unit raise CycleError
+pub fn UpdateCycle::accept_ppo_target(Self, @advantage.PpoTargetEvidence) -> Unit raise CycleError
+pub fn UpdateCycle::accept_trainer_result(Self, @trainer.TrainerStepResult) -> Unit raise CycleError
+pub fn UpdateCycle::add_group(Self, @rollout.RolloutGroupRequest) -> Unit raise CycleError
+pub fn UpdateCycle::admit_rollout(Self, @rollout.RolloutResponse) -> Unit raise CycleError
+pub fn UpdateCycle::advantage_count(Self) -> Int
+pub fn UpdateCycle::candidate(Self) -> @update.CandidatePolicy?
+pub fn UpdateCycle::committed_policy(Self) -> @identity.PolicyGeneration?
+pub fn UpdateCycle::dispatch_training(Self) -> Unit raise CycleError
+pub fn UpdateCycle::finish(Self) -> Unit raise CycleError
+pub fn UpdateCycle::group_count(Self) -> Int
+pub fn UpdateCycle::manifest(Self) -> @experiment.ExperimentManifest
+pub fn UpdateCycle::new(@experiment.ExperimentManifest, @rollout.RolloutGroupRequest) -> Self raise CycleError
+pub fn UpdateCycle::new_stale(@experiment.ExperimentManifest, @rollout.RolloutGroupRequest, @staleness.StalenessEvidence) -> Self raise CycleError
+pub fn UpdateCycle::policy(Self) -> @identity.PolicyGeneration
+pub fn UpdateCycle::prepare_training(Self, @trainer.TrainingRequest) -> Unit raise CycleError
+pub fn UpdateCycle::rollout_count(Self) -> Int
+pub fn UpdateCycle::seal_rollouts(Self) -> Unit raise CycleError
+pub fn UpdateCycle::staleness(Self) -> @staleness.StalenessEvidence?
+pub fn UpdateCycle::state(Self) -> CycleState
+pub fn UpdateCycle::terminal_count(Self) -> Int
+pub fn UpdateCycle::training_policy(Self) -> @identity.PolicyGeneration
+pub fn UpdateCycle::usable_count(Self) -> Int
+
+// Type aliases
+
+// Traits

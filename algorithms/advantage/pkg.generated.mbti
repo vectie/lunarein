@@ -1,0 +1,90 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vectie/lunarein/algorithms/advantage"
+
+import {
+  "moonbitlang/core/debug",
+  "vectie/lunarein/contracts/experiment",
+  "vectie/lunarein/contracts/identity",
+  "vectie/lunarein/contracts/reward",
+  "vectie/lunarein/contracts/trajectory",
+  "vectie/lunarein/contracts/update",
+}
+
+// Values
+pub fn gae_ppo_targets(@trajectory.Trajectory, @reward.ScalarRewardEvidence, @reward.TokenRewardEvidence, StateValueEvidence, discount~ : Double, trace_decay~ : Double, algorithm~ : @experiment.AlgorithmIdentity) -> PpoTargetEvidence raise AdvantageError
+
+pub fn grpo_group_normalize(ArrayView[@trajectory.Trajectory], ArrayView[@reward.ScalarRewardEvidence], minimum_variance~ : Double, algorithm~ : @experiment.AlgorithmIdentity) -> Array[AdvantageEvidence] raise AdvantageError
+
+pub fn reinforce_returns(@trajectory.Trajectory, @reward.ScalarRewardEvidence, @reward.TokenRewardEvidence, discount~ : Double, algorithm~ : @experiment.AlgorithmIdentity) -> AdvantageEvidence raise AdvantageError
+
+pub fn reinforce_returns_with_reference_kl(@trajectory.Trajectory, @reward.ScalarRewardEvidence, @reward.TokenRewardEvidence, @reward.ReferenceScoreEvidence, discount~ : Double, kl_coefficient~ : Double, algorithm~ : @experiment.AlgorithmIdentity) -> AdvantageEvidence raise AdvantageError
+
+// Errors
+pub(all) suberror AdvantageError {
+  InvalidDiscount
+  InvalidTraceDecay
+  InvalidKlCoefficient
+  InvalidMinimumVariance
+  AlgorithmMismatch
+  EvidenceIdentityMismatch
+  RewardSourceMismatch
+  LengthMismatch
+  NonFiniteValue(index~ : Int)
+  NonzeroEnvironmentTarget(index~ : Int)
+  InvalidTerminalBootstrap
+  IneligibleTerminal
+  NoTrainableTokens
+  GroupTooSmall
+  MixedGroup
+  MixedPolicy
+  MixedRewardSource
+  DuplicateRollout
+  DegenerateGroup
+  InvalidIndex(index~ : Int)
+  Reward(@reward.RewardError)
+  Trajectory(@trajectory.TrajectoryError)
+} derive(Eq, @debug.Debug)
+
+// Types and methods
+pub struct AdvantageEvidence {
+  // private fields
+}
+pub fn AdvantageEvidence::algorithm(Self) -> @experiment.AlgorithmIdentity
+pub fn AdvantageEvidence::matches_training_item(Self, @update.TrainingItemRef) -> Bool
+pub fn AdvantageEvidence::policy(Self) -> @identity.PolicyGeneration
+pub fn AdvantageEvidence::reward_source(Self) -> @reward.RewardSourceId
+pub fn AdvantageEvidence::rollout_id(Self) -> @identity.RolloutId
+pub fn AdvantageEvidence::token_count(Self) -> Int
+pub fn AdvantageEvidence::trainable_token_count(Self) -> Int
+pub fn AdvantageEvidence::training_item(Self) -> @update.TrainingItemRef raise AdvantageError
+pub fn AdvantageEvidence::trajectory_identity(Self) -> @trajectory.TrajectoryEvidenceIdentity
+pub fn AdvantageEvidence::value_at(Self, Int) -> Double raise AdvantageError
+
+pub struct PpoTargetEvidence {
+  // private fields
+}
+pub fn PpoTargetEvidence::advantage_at(Self, Int) -> Double raise AdvantageError
+pub fn PpoTargetEvidence::algorithm(Self) -> @experiment.AlgorithmIdentity
+pub fn PpoTargetEvidence::matches_training_item(Self, @update.TrainingItemRef) -> Bool
+pub fn PpoTargetEvidence::policy(Self) -> @identity.PolicyGeneration
+pub fn PpoTargetEvidence::reward_source(Self) -> @reward.RewardSourceId
+pub fn PpoTargetEvidence::rollout_id(Self) -> @identity.RolloutId
+pub fn PpoTargetEvidence::token_count(Self) -> Int
+pub fn PpoTargetEvidence::trainable_token_count(Self) -> Int
+pub fn PpoTargetEvidence::training_item(Self) -> @update.TrainingItemRef raise AdvantageError
+pub fn PpoTargetEvidence::trajectory_identity(Self) -> @trajectory.TrajectoryEvidenceIdentity
+pub fn PpoTargetEvidence::value_return_at(Self, Int) -> Double raise AdvantageError
+
+pub struct StateValueEvidence {
+  // private fields
+}
+pub fn StateValueEvidence::new(@trajectory.Trajectory, values~ : ArrayView[Double]) -> Self raise AdvantageError
+pub fn StateValueEvidence::policy(Self) -> @identity.PolicyGeneration
+pub fn StateValueEvidence::rollout_id(Self) -> @identity.RolloutId
+pub fn StateValueEvidence::trajectory_identity(Self) -> @trajectory.TrajectoryEvidenceIdentity
+pub fn StateValueEvidence::value_at(Self, Int) -> Double raise AdvantageError
+pub fn StateValueEvidence::value_count(Self) -> Int
+
+// Type aliases
+
+// Traits

@@ -1,0 +1,76 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vectie/lunarein/algorithms/correction"
+
+import {
+  "moonbitlang/core/debug",
+  "vectie/lunarein/algorithms/advantage",
+  "vectie/lunarein/contracts/experiment",
+  "vectie/lunarein/contracts/identity",
+  "vectie/lunarein/contracts/reward",
+  "vectie/lunarein/contracts/staleness",
+  "vectie/lunarein/contracts/trajectory",
+  "vectie/lunarein/contracts/update",
+}
+
+// Values
+
+// Errors
+pub(all) suberror CorrectionError {
+  InvalidBounds
+  LengthMismatch
+  EvidenceIdentityMismatch
+  MissingTargetLogprob(index~ : Int)
+  UnexpectedTargetLogprob(index~ : Int)
+  InvalidTargetLogprob(index~ : Int)
+  MissingBehaviorLogprob(index~ : Int)
+  InvalidBehaviorLogprob(index~ : Int)
+  UnsafeRatio(index~ : Int, ratio~ : Double)
+  InvalidIndex(index~ : Int)
+  Trajectory(@trajectory.TrajectoryError)
+} derive(Eq, @debug.Debug)
+
+// Types and methods
+pub struct CorrectedAdvantageEvidence {
+  // private fields
+}
+pub fn CorrectedAdvantageEvidence::algorithm(Self) -> @experiment.AlgorithmIdentity
+pub fn CorrectedAdvantageEvidence::matches_training_item(Self, @update.TrainingItemRef) -> Bool
+pub fn CorrectedAdvantageEvidence::new(@advantage.AdvantageEvidence, ImportanceCorrectionEvidence) -> Self raise CorrectionError
+pub fn CorrectedAdvantageEvidence::reward_source(Self) -> @reward.RewardSourceId
+pub fn CorrectedAdvantageEvidence::rollout_id(Self) -> @identity.RolloutId
+pub fn CorrectedAdvantageEvidence::source_policy(Self) -> @identity.PolicyGeneration
+pub fn CorrectedAdvantageEvidence::staleness(Self) -> @staleness.StalenessEvidence
+pub fn CorrectedAdvantageEvidence::target_policy(Self) -> @identity.PolicyGeneration
+pub fn CorrectedAdvantageEvidence::training_item(Self) -> @update.TrainingItemRef
+pub fn CorrectedAdvantageEvidence::trajectory_identity(Self) -> @trajectory.TrajectoryEvidenceIdentity
+
+pub(all) enum CorrectionDenominator {
+  BehaviorModel
+  SamplingDistribution
+} derive(Eq, @debug.Debug)
+
+pub struct ImportanceBounds {
+  // private fields
+} derive(Eq, @debug.Debug)
+pub fn ImportanceBounds::denominator(Self) -> CorrectionDenominator
+pub fn ImportanceBounds::maximum_ratio(Self) -> Double
+pub fn ImportanceBounds::minimum_ratio(Self) -> Double
+pub fn ImportanceBounds::new(minimum_ratio~ : Double, maximum_ratio~ : Double, denominator~ : CorrectionDenominator) -> Self raise CorrectionError
+
+pub struct ImportanceCorrectionEvidence {
+  // private fields
+}
+pub fn ImportanceCorrectionEvidence::denominator(Self) -> CorrectionDenominator
+pub fn ImportanceCorrectionEvidence::generations(Self) -> Int
+pub fn ImportanceCorrectionEvidence::new(@trajectory.Trajectory, @staleness.StalenessEvidence, @reward.PolicyScoreEvidence, ImportanceBounds) -> Self raise CorrectionError
+pub fn ImportanceCorrectionEvidence::ratio_at(Self, Int) -> Double? raise CorrectionError
+pub fn ImportanceCorrectionEvidence::rollout_id(Self) -> @identity.RolloutId
+pub fn ImportanceCorrectionEvidence::source_policy(Self) -> @identity.PolicyGeneration
+pub fn ImportanceCorrectionEvidence::staleness(Self) -> @staleness.StalenessEvidence
+pub fn ImportanceCorrectionEvidence::target_policy(Self) -> @identity.PolicyGeneration
+pub fn ImportanceCorrectionEvidence::token_count(Self) -> Int
+pub fn ImportanceCorrectionEvidence::trajectory_identity(Self) -> @trajectory.TrajectoryEvidenceIdentity
+
+// Type aliases
+
+// Traits
