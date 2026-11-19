@@ -108,11 +108,9 @@ pub fn PublicationFs::open(
       close_after_open_failure(session)
       fail_native(InspectExisting, inspect_status.val)
     }
-    let observed = parse_native_digest(observed_bytes) catch {
-      error => {
-        close_after_open_failure(session)
-        raise error
-      }
+    let observed = {
+      errdefer close_after_open_failure(session)
+      parse_native_digest(observed_bytes)
     }
     owner.accept_reservation(
       @publication.ReservationEvidence::existing(manifest, observed),
