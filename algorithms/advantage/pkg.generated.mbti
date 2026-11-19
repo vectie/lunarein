@@ -44,6 +44,9 @@ pub(all) suberror AdvantageError {
   Reward(@reward.RewardError)
   Trajectory(@trajectory.TrajectoryError)
 } derive(Eq, @debug.Debug)
+pub fn AdvantageError::equal(Self, Self) -> Bool
+pub fn AdvantageError::not_equal(Self, Self) -> Bool
+pub fn AdvantageError::to_repr(Self) -> @debug.Repr
 
 // Types and methods
 pub struct AdvantageEvidence {

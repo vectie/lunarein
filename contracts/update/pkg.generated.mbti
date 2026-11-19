@@ -28,6 +28,9 @@ pub(all) suberror UpdateError {
   NonFiniteTrainingTarget(index~ : Int)
   NonzeroEnvironmentTarget(index~ : Int)
 } derive(Eq, @debug.Debug)
+pub fn UpdateError::equal(Self, Self) -> Bool
+pub fn UpdateError::not_equal(Self, Self) -> Bool
+pub fn UpdateError::to_repr(Self) -> @debug.Repr
 
 // Types and methods
 pub struct CandidatePolicy {
@@ -55,7 +58,10 @@ pub fn OptimizerStepEvidence::trained_token_count(Self) -> Int
 pub struct OptimizerStepId {
   // private fields
 } derive(Eq, @debug.Debug)
+pub fn OptimizerStepId::equal(Self, Self) -> Bool
 pub fn OptimizerStepId::new(UInt64) -> Self raise UpdateError
+pub fn OptimizerStepId::not_equal(Self, Self) -> Bool
+pub fn OptimizerStepId::to_repr(Self) -> @debug.Repr
 pub fn OptimizerStepId::value(Self) -> UInt64
 
 pub struct TrainingBatch {
@@ -72,7 +78,10 @@ pub fn TrainingBatch::trainable_token_count(Self) -> Int
 pub struct TrainingBatchId {
   // private fields
 } derive(Eq, @debug.Debug)
+pub fn TrainingBatchId::equal(Self, Self) -> Bool
 pub fn TrainingBatchId::new(UInt64) -> Self raise UpdateError
+pub fn TrainingBatchId::not_equal(Self, Self) -> Bool
+pub fn TrainingBatchId::to_repr(Self) -> @debug.Repr
 pub fn TrainingBatchId::value(Self) -> UInt64
 
 pub struct TrainingItemRef {

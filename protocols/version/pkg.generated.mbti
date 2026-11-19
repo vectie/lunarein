@@ -11,15 +11,21 @@ import {
 pub(all) suberror VersionError {
   InvalidMajor
 } derive(Eq, @debug.Debug)
+pub fn VersionError::equal(Self, Self) -> Bool
+pub fn VersionError::not_equal(Self, Self) -> Bool
+pub fn VersionError::to_repr(Self) -> @debug.Repr
 
 // Types and methods
 pub struct ProtocolVersion {
   // private fields
 } derive(Eq, @debug.Debug)
+pub fn ProtocolVersion::equal(Self, Self) -> Bool
 pub fn ProtocolVersion::is_exact(Self, Self) -> Bool
 pub fn ProtocolVersion::major(Self) -> UInt16
 pub fn ProtocolVersion::minor(Self) -> UInt16
 pub fn ProtocolVersion::new(major~ : UInt16, minor~ : UInt16) -> Self raise VersionError
+pub fn ProtocolVersion::not_equal(Self, Self) -> Bool
+pub fn ProtocolVersion::to_repr(Self) -> @debug.Repr
 pub fn ProtocolVersion::v1() -> Self
 
 // Type aliases

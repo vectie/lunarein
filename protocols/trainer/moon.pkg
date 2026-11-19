@@ -1,9 +1,10 @@
 import {
-  "vectie/lunarein/contracts/identity",
+  "moonbitlang/core/debug",
   "vectie/lunarein/contracts/update",
   "vectie/lunarein/protocols/version",
 }
 
 import {
+  "vectie/lunarein/contracts/identity",
   "vectie/lunarein/contracts/trajectory",
 } for "test"

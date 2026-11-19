@@ -23,6 +23,9 @@ pub(all) suberror RoundError {
   EvidenceShapeMismatch
   EmptyRound
 } derive(Eq, @debug.Debug)
+pub fn RoundError::equal(Self, Self) -> Bool
+pub fn RoundError::not_equal(Self, Self) -> Bool
+pub fn RoundError::to_repr(Self) -> @debug.Repr
 
 // Types and methods
 pub(all) enum RoundAbortReason {
@@ -32,6 +35,9 @@ pub(all) enum RoundAbortReason {
   PublicationFailure
   OperatorRequested
 } derive(Eq, @debug.Debug)
+pub fn RoundAbortReason::equal(Self, Self) -> Bool
+pub fn RoundAbortReason::not_equal(Self, Self) -> Bool
+pub fn RoundAbortReason::to_repr(Self) -> @debug.Repr
 
 pub struct RoundOwner {
   // private fields
@@ -57,6 +63,9 @@ pub(all) enum RoundState {
   ReadyForTraining
   RoundAborted
 } derive(Eq, @debug.Debug)
+pub fn RoundState::equal(Self, Self) -> Bool
+pub fn RoundState::not_equal(Self, Self) -> Bool
+pub fn RoundState::to_repr(Self) -> @debug.Repr
 
 // Type aliases
 

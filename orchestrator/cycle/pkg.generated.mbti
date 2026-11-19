@@ -42,6 +42,9 @@ pub(all) suberror CycleError {
   Round(@round.RoundError)
   Trainer(@trainer.TrainerProtocolError)
 } derive(Eq, @debug.Debug)
+pub fn CycleError::equal(Self, Self) -> Bool
+pub fn CycleError::not_equal(Self, Self) -> Bool
+pub fn CycleError::to_repr(Self) -> @debug.Repr
 
 // Types and methods
 pub(all) enum CycleAbortReason {
@@ -51,6 +54,9 @@ pub(all) enum CycleAbortReason {
   PublicationFailure
   OperatorRequested
 } derive(Eq, @debug.Debug)
+pub fn CycleAbortReason::equal(Self, Self) -> Bool
+pub fn CycleAbortReason::not_equal(Self, Self) -> Bool
+pub fn CycleAbortReason::to_repr(Self) -> @debug.Repr
 
 pub(all) enum CycleState {
   GatheringRollouts
@@ -63,6 +69,9 @@ pub(all) enum CycleState {
   CycleCompleted
   CycleAborted
 } derive(Eq, @debug.Debug)
+pub fn CycleState::equal(Self, Self) -> Bool
+pub fn CycleState::not_equal(Self, Self) -> Bool
+pub fn CycleState::to_repr(Self) -> @debug.Repr
 
 pub struct UpdateCycle {
   // private fields

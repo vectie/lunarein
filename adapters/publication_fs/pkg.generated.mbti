@@ -22,6 +22,9 @@ pub(all) suberror PublicationFsError {
   NativeFailure(operation~ : PublicationFsOperation, status~ : Int)
   Protocol(@publication.PublicationError)
 } derive(Eq, @debug.Debug)
+pub fn PublicationFsError::equal(Self, Self) -> Bool
+pub fn PublicationFsError::not_equal(Self, Self) -> Bool
+pub fn PublicationFsError::to_repr(Self) -> @debug.Repr
 
 // Types and methods
 type NativePublicationSession
@@ -48,6 +51,9 @@ pub(all) enum PublicationFsOperation {
   Publish
   Cleanup
 } derive(Eq, @debug.Debug)
+pub fn PublicationFsOperation::equal(Self, Self) -> Bool
+pub fn PublicationFsOperation::not_equal(Self, Self) -> Bool
+pub fn PublicationFsOperation::to_repr(Self) -> @debug.Repr
 
 // Type aliases
 

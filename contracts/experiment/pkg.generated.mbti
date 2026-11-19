@@ -12,14 +12,20 @@ import {
 pub(all) suberror ExperimentError {
   InvalidCapacity(kind~ : CapacityKind, value~ : UInt64, maximum~ : UInt64)
 } derive(Eq, @debug.Debug)
+pub fn ExperimentError::equal(Self, Self) -> Bool
+pub fn ExperimentError::not_equal(Self, Self) -> Bool
+pub fn ExperimentError::to_repr(Self) -> @debug.Repr
 
 // Types and methods
 pub struct AlgorithmIdentity {
   // private fields
 } derive(Eq, @debug.Debug)
 pub fn AlgorithmIdentity::digest(Self) -> @identity.Sha256Digest
+pub fn AlgorithmIdentity::equal(Self, Self) -> Bool
 pub fn AlgorithmIdentity::kind(Self) -> AlgorithmKind
 pub fn AlgorithmIdentity::new(@identity.Sha256Digest, AlgorithmKind) -> Self
+pub fn AlgorithmIdentity::not_equal(Self, Self) -> Bool
+pub fn AlgorithmIdentity::to_repr(Self) -> @debug.Repr
 
 pub(all) enum AlgorithmKind {
   Reinforce
@@ -27,6 +33,9 @@ pub(all) enum AlgorithmKind {
   Grpo
   GaePpo
 } derive(Eq, @debug.Debug)
+pub fn AlgorithmKind::equal(Self, Self) -> Bool
+pub fn AlgorithmKind::not_equal(Self, Self) -> Bool
+pub fn AlgorithmKind::to_repr(Self) -> @debug.Repr
 
 pub(all) enum CapacityKind {
   ConcurrentGroups
@@ -35,34 +44,49 @@ pub(all) enum CapacityKind {
   ResponseTokens
   PendingUpdates
 } derive(Eq, @debug.Debug)
+pub fn CapacityKind::equal(Self, Self) -> Bool
+pub fn CapacityKind::not_equal(Self, Self) -> Bool
+pub fn CapacityKind::to_repr(Self) -> @debug.Repr
 
 pub struct ConcurrentGroupCapacity {
   // private fields
 } derive(Eq, @debug.Debug)
+pub fn ConcurrentGroupCapacity::equal(Self, Self) -> Bool
 pub fn ConcurrentGroupCapacity::new(UInt64) -> Self raise ExperimentError
+pub fn ConcurrentGroupCapacity::not_equal(Self, Self) -> Bool
+pub fn ConcurrentGroupCapacity::to_repr(Self) -> @debug.Repr
 pub fn ConcurrentGroupCapacity::value(Self) -> UInt64
 
 pub struct DatasetIdentity {
   // private fields
 } derive(Eq, @debug.Debug)
 pub fn DatasetIdentity::digest(Self) -> @identity.Sha256Digest
+pub fn DatasetIdentity::equal(Self, Self) -> Bool
 pub fn DatasetIdentity::new(@identity.Sha256Digest) -> Self
+pub fn DatasetIdentity::not_equal(Self, Self) -> Bool
+pub fn DatasetIdentity::to_repr(Self) -> @debug.Repr
 
 pub struct ExperimentIdentity {
   // private fields
 } derive(Eq, @debug.Debug)
 pub fn ExperimentIdentity::digest(Self) -> @identity.Sha256Digest
+pub fn ExperimentIdentity::equal(Self, Self) -> Bool
 pub fn ExperimentIdentity::new(@identity.Sha256Digest) -> Self
+pub fn ExperimentIdentity::not_equal(Self, Self) -> Bool
+pub fn ExperimentIdentity::to_repr(Self) -> @debug.Repr
 
 pub struct ExperimentLimits {
   // private fields
 } derive(Eq, @debug.Debug)
 pub fn ExperimentLimits::concurrent_groups(Self) -> ConcurrentGroupCapacity
+pub fn ExperimentLimits::equal(Self, Self) -> Bool
 pub fn ExperimentLimits::new(concurrent_groups~ : ConcurrentGroupCapacity, rollouts_per_group~ : RolloutsPerGroupCapacity, prompt_tokens~ : PromptTokenCapacity, response_tokens~ : ResponseTokenCapacity, pending_updates~ : PendingUpdateCapacity) -> Self
+pub fn ExperimentLimits::not_equal(Self, Self) -> Bool
 pub fn ExperimentLimits::pending_updates(Self) -> PendingUpdateCapacity
 pub fn ExperimentLimits::prompt_tokens(Self) -> PromptTokenCapacity
 pub fn ExperimentLimits::response_tokens(Self) -> ResponseTokenCapacity
 pub fn ExperimentLimits::rollouts_per_group(Self) -> RolloutsPerGroupCapacity
+pub fn ExperimentLimits::to_repr(Self) -> @debug.Repr
 
 pub struct ExperimentManifest {
   // private fields
@@ -70,47 +94,68 @@ pub struct ExperimentManifest {
 pub fn ExperimentManifest::actor(Self) -> @identity.PolicyGeneration
 pub fn ExperimentManifest::algorithm(Self) -> AlgorithmIdentity
 pub fn ExperimentManifest::dataset(Self) -> DatasetIdentity
+pub fn ExperimentManifest::equal(Self, Self) -> Bool
 pub fn ExperimentManifest::identity(Self) -> ExperimentIdentity
 pub fn ExperimentManifest::limits(Self) -> ExperimentLimits
 pub fn ExperimentManifest::new(identity~ : ExperimentIdentity, actor~ : @identity.PolicyGeneration, dataset~ : DatasetIdentity, reward_policy~ : RewardPolicyIdentity, tokenizer~ : TokenizerIdentity, algorithm~ : AlgorithmIdentity, limits~ : ExperimentLimits) -> Self
+pub fn ExperimentManifest::not_equal(Self, Self) -> Bool
 pub fn ExperimentManifest::reward_policy(Self) -> RewardPolicyIdentity
+pub fn ExperimentManifest::to_repr(Self) -> @debug.Repr
 pub fn ExperimentManifest::tokenizer(Self) -> TokenizerIdentity
 
 pub struct PendingUpdateCapacity {
   // private fields
 } derive(Eq, @debug.Debug)
+pub fn PendingUpdateCapacity::equal(Self, Self) -> Bool
 pub fn PendingUpdateCapacity::new(UInt64) -> Self raise ExperimentError
+pub fn PendingUpdateCapacity::not_equal(Self, Self) -> Bool
+pub fn PendingUpdateCapacity::to_repr(Self) -> @debug.Repr
 pub fn PendingUpdateCapacity::value(Self) -> UInt64
 
 pub struct PromptTokenCapacity {
   // private fields
 } derive(Eq, @debug.Debug)
+pub fn PromptTokenCapacity::equal(Self, Self) -> Bool
 pub fn PromptTokenCapacity::new(UInt64) -> Self raise ExperimentError
+pub fn PromptTokenCapacity::not_equal(Self, Self) -> Bool
+pub fn PromptTokenCapacity::to_repr(Self) -> @debug.Repr
 pub fn PromptTokenCapacity::value(Self) -> UInt64
 
 pub struct ResponseTokenCapacity {
   // private fields
 } derive(Eq, @debug.Debug)
+pub fn ResponseTokenCapacity::equal(Self, Self) -> Bool
 pub fn ResponseTokenCapacity::new(UInt64) -> Self raise ExperimentError
+pub fn ResponseTokenCapacity::not_equal(Self, Self) -> Bool
+pub fn ResponseTokenCapacity::to_repr(Self) -> @debug.Repr
 pub fn ResponseTokenCapacity::value(Self) -> UInt64
 
 pub struct RewardPolicyIdentity {
   // private fields
 } derive(Eq, @debug.Debug)
 pub fn RewardPolicyIdentity::digest(Self) -> @identity.Sha256Digest
+pub fn RewardPolicyIdentity::equal(Self, Self) -> Bool
 pub fn RewardPolicyIdentity::new(@identity.Sha256Digest) -> Self
+pub fn RewardPolicyIdentity::not_equal(Self, Self) -> Bool
+pub fn RewardPolicyIdentity::to_repr(Self) -> @debug.Repr
 
 pub struct RolloutsPerGroupCapacity {
   // private fields
 } derive(Eq, @debug.Debug)
+pub fn RolloutsPerGroupCapacity::equal(Self, Self) -> Bool
 pub fn RolloutsPerGroupCapacity::new(UInt64) -> Self raise ExperimentError
+pub fn RolloutsPerGroupCapacity::not_equal(Self, Self) -> Bool
+pub fn RolloutsPerGroupCapacity::to_repr(Self) -> @debug.Repr
 pub fn RolloutsPerGroupCapacity::value(Self) -> UInt64
 
 pub struct TokenizerIdentity {
   // private fields
 } derive(Eq, @debug.Debug)
 pub fn TokenizerIdentity::digest(Self) -> @identity.Sha256Digest
+pub fn TokenizerIdentity::equal(Self, Self) -> Bool
 pub fn TokenizerIdentity::new(@identity.Sha256Digest) -> Self
+pub fn TokenizerIdentity::not_equal(Self, Self) -> Bool
+pub fn TokenizerIdentity::to_repr(Self) -> @debug.Repr
 
 // Type aliases
 

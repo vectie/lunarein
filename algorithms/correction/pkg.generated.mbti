@@ -28,6 +28,9 @@ pub(all) suberror CorrectionError {
   InvalidIndex(index~ : Int)
   Trajectory(@trajectory.TrajectoryError)
 } derive(Eq, @debug.Debug)
+pub fn CorrectionError::equal(Self, Self) -> Bool
+pub fn CorrectionError::not_equal(Self, Self) -> Bool
+pub fn CorrectionError::to_repr(Self) -> @debug.Repr
 
 // Types and methods
 pub struct CorrectedAdvantageEvidence {
@@ -48,14 +51,20 @@ pub(all) enum CorrectionDenominator {
   BehaviorModel
   SamplingDistribution
 } derive(Eq, @debug.Debug)
+pub fn CorrectionDenominator::equal(Self, Self) -> Bool
+pub fn CorrectionDenominator::not_equal(Self, Self) -> Bool
+pub fn CorrectionDenominator::to_repr(Self) -> @debug.Repr
 
 pub struct ImportanceBounds {
   // private fields
 } derive(Eq, @debug.Debug)
 pub fn ImportanceBounds::denominator(Self) -> CorrectionDenominator
+pub fn ImportanceBounds::equal(Self, Self) -> Bool
 pub fn ImportanceBounds::maximum_ratio(Self) -> Double
 pub fn ImportanceBounds::minimum_ratio(Self) -> Double
 pub fn ImportanceBounds::new(minimum_ratio~ : Double, maximum_ratio~ : Double, denominator~ : CorrectionDenominator) -> Self raise CorrectionError
+pub fn ImportanceBounds::not_equal(Self, Self) -> Bool
+pub fn ImportanceBounds::to_repr(Self) -> @debug.Repr
 
 pub struct ImportanceCorrectionEvidence {
   // private fields

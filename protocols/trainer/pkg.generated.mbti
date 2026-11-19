@@ -18,6 +18,9 @@ pub(all) suberror TrainerProtocolError {
   CandidateMismatch
   UnsupportedVersion
 } derive(Eq, @debug.Debug)
+pub fn TrainerProtocolError::equal(Self, Self) -> Bool
+pub fn TrainerProtocolError::not_equal(Self, Self) -> Bool
+pub fn TrainerProtocolError::to_repr(Self) -> @debug.Repr
 
 // Types and methods
 pub(all) enum TrainerFailure {
@@ -26,6 +29,9 @@ pub(all) enum TrainerFailure {
   NumericalFailure
   Cancelled
 } derive(Eq, @debug.Debug)
+pub fn TrainerFailure::equal(Self, Self) -> Bool
+pub fn TrainerFailure::not_equal(Self, Self) -> Bool
+pub fn TrainerFailure::to_repr(Self) -> @debug.Repr
 
 pub(all) enum TrainerState {
   Prepared
@@ -34,6 +40,9 @@ pub(all) enum TrainerState {
   Completed
   Failed
 } derive(Eq, @debug.Debug)
+pub fn TrainerState::equal(Self, Self) -> Bool
+pub fn TrainerState::not_equal(Self, Self) -> Bool
+pub fn TrainerState::to_repr(Self) -> @debug.Repr
 
 pub struct TrainerStepResult {
   // private fields
@@ -68,7 +77,10 @@ pub fn TrainingRequest::version(Self) -> @version.ProtocolVersion
 pub struct TrainingRequestId {
   // private fields
 } derive(Eq, @debug.Debug)
+pub fn TrainingRequestId::equal(Self, Self) -> Bool
 pub fn TrainingRequestId::new(UInt64) -> Self raise TrainerProtocolError
+pub fn TrainingRequestId::not_equal(Self, Self) -> Bool
+pub fn TrainingRequestId::to_repr(Self) -> @debug.Repr
 pub fn TrainingRequestId::value(Self) -> UInt64
 
 // Type aliases

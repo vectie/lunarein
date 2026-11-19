@@ -18,6 +18,9 @@ pub(all) suberror TrajectoryError {
   InconsistentTokenEvidence(index~ : Int)
   InvalidTerminal
 } derive(Eq, @debug.Debug)
+pub fn TrajectoryError::equal(Self, Self) -> Bool
+pub fn TrajectoryError::not_equal(Self, Self) -> Bool
+pub fn TrajectoryError::to_repr(Self) -> @debug.Repr
 
 // Types and methods
 pub struct RolloutToken {
@@ -35,6 +38,9 @@ pub(all) enum TokenOrigin {
   ModelGenerated
   EnvironmentSupplied
 } derive(Eq, @debug.Debug)
+pub fn TokenOrigin::equal(Self, Self) -> Bool
+pub fn TokenOrigin::not_equal(Self, Self) -> Bool
+pub fn TokenOrigin::to_repr(Self) -> @debug.Repr
 
 pub struct Trajectory {
   // private fields
@@ -67,6 +73,9 @@ pub(all) enum TrajectoryTerminal {
   Cancelled
   Failed
 } derive(Eq, @debug.Debug)
+pub fn TrajectoryTerminal::equal(Self, Self) -> Bool
+pub fn TrajectoryTerminal::not_equal(Self, Self) -> Bool
+pub fn TrajectoryTerminal::to_repr(Self) -> @debug.Repr
 
 // Type aliases
 

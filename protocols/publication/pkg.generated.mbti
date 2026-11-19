@@ -26,6 +26,9 @@ pub(all) suberror PublicationError {
   UnsupportedVersion
   InvalidState(expected~ : PublicationState, actual~ : PublicationState)
 } derive(Eq, @debug.Debug)
+pub fn PublicationError::equal(Self, Self) -> Bool
+pub fn PublicationError::not_equal(Self, Self) -> Bool
+pub fn PublicationError::to_repr(Self) -> @debug.Repr
 
 // Types and methods
 pub struct ArtifactChunkEvidence {
@@ -62,11 +65,17 @@ pub fn FullArtifactManifest::version(Self) -> @version.ProtocolVersion
 pub(all) enum PolicyArtifactFormat {
   SafetensorsV1
 } derive(Eq, @debug.Debug)
+pub fn PolicyArtifactFormat::equal(Self, Self) -> Bool
+pub fn PolicyArtifactFormat::not_equal(Self, Self) -> Bool
+pub fn PolicyArtifactFormat::to_repr(Self) -> @debug.Repr
 
 pub struct PublicationId {
   // private fields
 } derive(Eq, @debug.Debug)
+pub fn PublicationId::equal(Self, Self) -> Bool
 pub fn PublicationId::new(UInt64) -> Self raise PublicationError
+pub fn PublicationId::not_equal(Self, Self) -> Bool
+pub fn PublicationId::to_repr(Self) -> @debug.Repr
 pub fn PublicationId::value(Self) -> UInt64
 
 pub struct PublicationOwner {
@@ -98,11 +107,17 @@ pub(all) enum PublicationState {
   TargetConflict
   Aborted
 } derive(Eq, @debug.Debug)
+pub fn PublicationState::equal(Self, Self) -> Bool
+pub fn PublicationState::not_equal(Self, Self) -> Bool
+pub fn PublicationState::to_repr(Self) -> @debug.Repr
 
 pub(all) enum PublicationTransport {
   FullArtifactV1
   DeltaDeferred
 } derive(Eq, @debug.Debug)
+pub fn PublicationTransport::equal(Self, Self) -> Bool
+pub fn PublicationTransport::not_equal(Self, Self) -> Bool
+pub fn PublicationTransport::to_repr(Self) -> @debug.Repr
 
 pub struct ReservationEvidence {
   // private fields
@@ -120,6 +135,9 @@ pub(all) enum ReservationOutcome {
   ExistingCandidateResumed
   ExistingTargetRefused
 } derive(Eq, @debug.Debug)
+pub fn ReservationOutcome::equal(Self, Self) -> Bool
+pub fn ReservationOutcome::not_equal(Self, Self) -> Bool
+pub fn ReservationOutcome::to_repr(Self) -> @debug.Repr
 
 pub struct RolloutRankAcknowledgement {
   // private fields

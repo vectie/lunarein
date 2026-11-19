@@ -44,6 +44,9 @@ pub(all) suberror RolloutProtocolError {
   Reward(@reward.RewardError)
   Trajectory(@trajectory.TrajectoryError)
 } derive(Eq, @debug.Debug)
+pub fn RolloutProtocolError::equal(Self, Self) -> Bool
+pub fn RolloutProtocolError::not_equal(Self, Self) -> Bool
+pub fn RolloutProtocolError::to_repr(Self) -> @debug.Repr
 
 // Types and methods
 pub(all) enum CancellationReason {
@@ -51,6 +54,9 @@ pub(all) enum CancellationReason {
   Superseded
   OperatorRequested
 } derive(Eq, @debug.Debug)
+pub fn CancellationReason::equal(Self, Self) -> Bool
+pub fn CancellationReason::not_equal(Self, Self) -> Bool
+pub fn CancellationReason::to_repr(Self) -> @debug.Repr
 
 pub(all) enum FailureClass {
   InvalidRequest
@@ -58,12 +64,18 @@ pub(all) enum FailureClass {
   ResourceExhausted
   InternalFailure
 } derive(Eq, @debug.Debug)
+pub fn FailureClass::equal(Self, Self) -> Bool
+pub fn FailureClass::not_equal(Self, Self) -> Bool
+pub fn FailureClass::to_repr(Self) -> @debug.Repr
 
 pub(all) enum PartialReason {
   ResponseTokenLimit
   DeadlineReached
   EnvironmentEnded
 } derive(Eq, @debug.Debug)
+pub fn PartialReason::equal(Self, Self) -> Bool
+pub fn PartialReason::not_equal(Self, Self) -> Bool
+pub fn PartialReason::to_repr(Self) -> @debug.Repr
 
 pub struct RolloutGroupRequest {
   // private fields
@@ -87,17 +99,23 @@ pub fn RolloutGroupRequest::tokenizer(Self) -> @experiment.TokenizerIdentity
 pub struct RolloutLimits {
   // private fields
 } derive(Eq, @debug.Debug)
+pub fn RolloutLimits::equal(Self, Self) -> Bool
 pub fn RolloutLimits::maximum_prompt_tokens(Self) -> Int
 pub fn RolloutLimits::maximum_response_tokens(Self) -> Int
 pub fn RolloutLimits::maximum_rollouts(Self) -> Int
 pub fn RolloutLimits::maximum_token_id(Self) -> Int
 pub fn RolloutLimits::new(maximum_rollouts~ : Int, maximum_prompt_tokens~ : Int, maximum_response_tokens~ : Int, maximum_token_id~ : Int) -> Self raise RolloutProtocolError
+pub fn RolloutLimits::not_equal(Self, Self) -> Bool
+pub fn RolloutLimits::to_repr(Self) -> @debug.Repr
 
 pub struct RolloutRequestId {
   // private fields
 } derive(Eq, @debug.Debug)
 pub fn RolloutRequestId::digest(Self) -> @identity.Sha256Digest
+pub fn RolloutRequestId::equal(Self, Self) -> Bool
 pub fn RolloutRequestId::new(@identity.Sha256Digest) -> Self
+pub fn RolloutRequestId::not_equal(Self, Self) -> Bool
+pub fn RolloutRequestId::to_repr(Self) -> @debug.Repr
 
 pub struct RolloutResponse {
   // private fields
@@ -114,15 +132,21 @@ pub fn RolloutResponse::trajectory(Self) -> @trajectory.Trajectory
 pub struct RolloutSelectionPolicy {
   // private fields
 } derive(Eq, @debug.Debug)
+pub fn RolloutSelectionPolicy::equal(Self, Self) -> Bool
 pub fn RolloutSelectionPolicy::minimum_usable(Self) -> Int
 pub fn RolloutSelectionPolicy::new(Int) -> Self raise RolloutProtocolError
+pub fn RolloutSelectionPolicy::not_equal(Self, Self) -> Bool
+pub fn RolloutSelectionPolicy::to_repr(Self) -> @debug.Repr
 
 pub struct RolloutSlot {
   // private fields
 } derive(Eq, @debug.Debug)
+pub fn RolloutSlot::equal(Self, Self) -> Bool
 pub fn RolloutSlot::new(rollout_id~ : @identity.RolloutId, sampling~ : SamplingIdentity) -> Self
+pub fn RolloutSlot::not_equal(Self, Self) -> Bool
 pub fn RolloutSlot::rollout_id(Self) -> @identity.RolloutId
 pub fn RolloutSlot::sampling(Self) -> SamplingIdentity
+pub fn RolloutSlot::to_repr(Self) -> @debug.Repr
 
 pub(all) enum RolloutTerminalEvidence {
   Complete
@@ -130,24 +154,36 @@ pub(all) enum RolloutTerminalEvidence {
   Cancelled(CancellationReason)
   Failed(FailureClass)
 } derive(Eq, @debug.Debug)
+pub fn RolloutTerminalEvidence::equal(Self, Self) -> Bool
+pub fn RolloutTerminalEvidence::not_equal(Self, Self) -> Bool
+pub fn RolloutTerminalEvidence::to_repr(Self) -> @debug.Repr
 
 pub struct SamplingIdentity {
   // private fields
 } derive(Eq, @debug.Debug)
+pub fn SamplingIdentity::equal(Self, Self) -> Bool
 pub fn SamplingIdentity::new(plan_digest~ : @identity.Sha256Digest, seed~ : UInt64) -> Self
+pub fn SamplingIdentity::not_equal(Self, Self) -> Bool
 pub fn SamplingIdentity::plan_digest(Self) -> @identity.Sha256Digest
 pub fn SamplingIdentity::seed(Self) -> UInt64
+pub fn SamplingIdentity::to_repr(Self) -> @debug.Repr
 
 pub struct ScoreRequestId {
   // private fields
 } derive(Eq, @debug.Debug)
 pub fn ScoreRequestId::digest(Self) -> @identity.Sha256Digest
+pub fn ScoreRequestId::equal(Self, Self) -> Bool
 pub fn ScoreRequestId::new(@identity.Sha256Digest) -> Self
+pub fn ScoreRequestId::not_equal(Self, Self) -> Bool
+pub fn ScoreRequestId::to_repr(Self) -> @debug.Repr
 
 pub(all) enum ScoreTarget {
   Policy(@identity.PolicyGeneration)
   Reference(@identity.Sha256Digest)
 } derive(Eq, @debug.Debug)
+pub fn ScoreTarget::equal(Self, Self) -> Bool
+pub fn ScoreTarget::not_equal(Self, Self) -> Bool
+pub fn ScoreTarget::to_repr(Self) -> @debug.Repr
 
 pub struct TeacherScoreEvidence {
   // private fields
@@ -177,9 +213,12 @@ pub struct TeacherTokenScore {
   // private fields
 } derive(Eq, @debug.Debug)
 pub fn TeacherTokenScore::environment() -> Self
+pub fn TeacherTokenScore::equal(Self, Self) -> Bool
 pub fn TeacherTokenScore::is_scored(Self) -> Bool
 pub fn TeacherTokenScore::model(model_logprob~ : Double) -> Self raise RolloutProtocolError
 pub fn TeacherTokenScore::model_logprob(Self) -> Double?
+pub fn TeacherTokenScore::not_equal(Self, Self) -> Bool
+pub fn TeacherTokenScore::to_repr(Self) -> @debug.Repr
 
 // Type aliases
 
