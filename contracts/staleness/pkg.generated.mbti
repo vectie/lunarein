@@ -1,0 +1,42 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vectie/lunarein/contracts/staleness"
+
+import {
+  "moonbitlang/core/debug",
+  "vectie/lunarein/contracts/identity",
+}
+
+// Values
+
+// Errors
+pub(all) suberror StalenessError {
+  InvalidMaximum
+  EmptyLineage
+  SourceMismatch
+  TargetMismatch
+  BrokenLineage(index~ : Int)
+  ExceedsMaximum(actual~ : Int, maximum~ : Int)
+  InvalidIndex(index~ : Int)
+} derive(Eq, @debug.Debug)
+
+// Types and methods
+pub struct StalenessEvidence {
+  // private fields
+} derive(Eq, @debug.Debug)
+pub fn StalenessEvidence::generation_at(Self, Int) -> @identity.PolicyGeneration raise StalenessError
+pub fn StalenessEvidence::generations(Self) -> Int
+pub fn StalenessEvidence::lineage_length(Self) -> Int
+pub fn StalenessEvidence::requires_correction(Self) -> Bool
+pub fn StalenessEvidence::source(Self) -> @identity.PolicyGeneration
+pub fn StalenessEvidence::target(Self) -> @identity.PolicyGeneration
+
+pub struct StalenessPolicy {
+  // private fields
+} derive(Eq, @debug.Debug)
+pub fn StalenessPolicy::evaluate(Self, source~ : @identity.PolicyGeneration, target~ : @identity.PolicyGeneration, lineage~ : ArrayView[@identity.PolicyGeneration]) -> StalenessEvidence raise StalenessError
+pub fn StalenessPolicy::maximum_generations(Self) -> Int
+pub fn StalenessPolicy::new(Int) -> Self raise StalenessError
+
+// Type aliases
+
+// Traits

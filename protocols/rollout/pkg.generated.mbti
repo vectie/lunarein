@@ -1,0 +1,186 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vectie/lunarein/protocols/rollout"
+
+import {
+  "moonbitlang/core/debug",
+  "vectie/lunarein/contracts/experiment",
+  "vectie/lunarein/contracts/identity",
+  "vectie/lunarein/contracts/reward",
+  "vectie/lunarein/contracts/trajectory",
+  "vectie/lunarein/protocols/version",
+}
+
+// Values
+
+// Errors
+pub(all) suberror RolloutProtocolError {
+  UnsupportedVersion
+  InvalidLimit
+  EmptyPrompt
+  InvalidPromptToken(index~ : Int)
+  EmptyRolloutSlots
+  TooManyRolloutSlots
+  InvalidSelectionPolicy
+  DuplicateRolloutId(index~ : Int)
+  DuplicateSamplingIdentity(index~ : Int)
+  InvalidSlotIndex(index~ : Int)
+  UnknownRollout
+  RequestIdentityMismatch
+  GroupIdentityMismatch
+  ActorIdentityMismatch
+  TokenizerIdentityMismatch
+  SamplingIdentityMismatch
+  PromptMismatch
+  ResponseTooLong
+  ResponseTokenOutOfRange(index~ : Int)
+  TerminalMismatch
+  IneligibleForScoring
+  NoTrainableTokens
+  ScoreIdentityMismatch
+  ScoreLengthMismatch
+  InvalidScoreLogProbability(index~ : Int)
+  ScoreOriginMismatch(index~ : Int)
+  ScoreTargetMismatch
+  Reward(@reward.RewardError)
+  Trajectory(@trajectory.TrajectoryError)
+} derive(Eq, @debug.Debug)
+
+// Types and methods
+pub(all) enum CancellationReason {
+  GroupSatisfied
+  Superseded
+  OperatorRequested
+} derive(Eq, @debug.Debug)
+
+pub(all) enum FailureClass {
+  InvalidRequest
+  RuntimeUnavailable
+  ResourceExhausted
+  InternalFailure
+} derive(Eq, @debug.Debug)
+
+pub(all) enum PartialReason {
+  ResponseTokenLimit
+  DeadlineReached
+  EnvironmentEnded
+} derive(Eq, @debug.Debug)
+
+pub struct RolloutGroupRequest {
+  // private fields
+}
+pub fn RolloutGroupRequest::actor(Self) -> @identity.PolicyGeneration
+pub fn RolloutGroupRequest::dataset(Self) -> @experiment.DatasetIdentity
+pub fn RolloutGroupRequest::experiment(Self) -> @experiment.ExperimentIdentity
+pub fn RolloutGroupRequest::group_id(Self) -> @identity.GroupId
+pub fn RolloutGroupRequest::limits(Self) -> RolloutLimits
+pub fn RolloutGroupRequest::new(protocol_version~ : @version.ProtocolVersion, request_id~ : RolloutRequestId, experiment~ : @experiment.ExperimentIdentity, dataset~ : @experiment.DatasetIdentity, group_id~ : @identity.GroupId, actor~ : @identity.PolicyGeneration, tokenizer~ : @experiment.TokenizerIdentity, limits~ : RolloutLimits, selection~ : RolloutSelectionPolicy, prompt_tokens~ : ArrayView[Int], slots~ : ArrayView[RolloutSlot]) -> Self raise RolloutProtocolError
+pub fn RolloutGroupRequest::prompt_length(Self) -> Int
+pub fn RolloutGroupRequest::prompt_token_at(Self, Int) -> Int raise RolloutProtocolError
+pub fn RolloutGroupRequest::protocol_version(Self) -> @version.ProtocolVersion
+pub fn RolloutGroupRequest::request_id(Self) -> RolloutRequestId
+pub fn RolloutGroupRequest::rollout_count(Self) -> Int
+pub fn RolloutGroupRequest::selection(Self) -> RolloutSelectionPolicy
+pub fn RolloutGroupRequest::slot_at(Self, Int) -> RolloutSlot raise RolloutProtocolError
+pub fn RolloutGroupRequest::slot_index_for_rollout(Self, @identity.RolloutId) -> Int?
+pub fn RolloutGroupRequest::tokenizer(Self) -> @experiment.TokenizerIdentity
+
+pub struct RolloutLimits {
+  // private fields
+} derive(Eq, @debug.Debug)
+pub fn RolloutLimits::maximum_prompt_tokens(Self) -> Int
+pub fn RolloutLimits::maximum_response_tokens(Self) -> Int
+pub fn RolloutLimits::maximum_rollouts(Self) -> Int
+pub fn RolloutLimits::maximum_token_id(Self) -> Int
+pub fn RolloutLimits::new(maximum_rollouts~ : Int, maximum_prompt_tokens~ : Int, maximum_response_tokens~ : Int, maximum_token_id~ : Int) -> Self raise RolloutProtocolError
+
+pub struct RolloutRequestId {
+  // private fields
+} derive(Eq, @debug.Debug)
+pub fn RolloutRequestId::digest(Self) -> @identity.Sha256Digest
+pub fn RolloutRequestId::new(@identity.Sha256Digest) -> Self
+
+pub struct RolloutResponse {
+  // private fields
+}
+pub fn RolloutResponse::matches_request(Self, RolloutGroupRequest) -> Bool
+pub fn RolloutResponse::new(protocol_version~ : @version.ProtocolVersion, request_id~ : RolloutRequestId, tokenizer~ : @experiment.TokenizerIdentity, sampling~ : SamplingIdentity, trajectory~ : @trajectory.Trajectory, terminal~ : RolloutTerminalEvidence, expected_request~ : RolloutGroupRequest) -> Self raise RolloutProtocolError
+pub fn RolloutResponse::protocol_version(Self) -> @version.ProtocolVersion
+pub fn RolloutResponse::request_id(Self) -> RolloutRequestId
+pub fn RolloutResponse::sampling(Self) -> SamplingIdentity
+pub fn RolloutResponse::terminal(Self) -> RolloutTerminalEvidence
+pub fn RolloutResponse::tokenizer(Self) -> @experiment.TokenizerIdentity
+pub fn RolloutResponse::trajectory(Self) -> @trajectory.Trajectory
+
+pub struct RolloutSelectionPolicy {
+  // private fields
+} derive(Eq, @debug.Debug)
+pub fn RolloutSelectionPolicy::minimum_usable(Self) -> Int
+pub fn RolloutSelectionPolicy::new(Int) -> Self raise RolloutProtocolError
+
+pub struct RolloutSlot {
+  // private fields
+} derive(Eq, @debug.Debug)
+pub fn RolloutSlot::new(rollout_id~ : @identity.RolloutId, sampling~ : SamplingIdentity) -> Self
+pub fn RolloutSlot::rollout_id(Self) -> @identity.RolloutId
+pub fn RolloutSlot::sampling(Self) -> SamplingIdentity
+
+pub(all) enum RolloutTerminalEvidence {
+  Complete
+  Partial(PartialReason)
+  Cancelled(CancellationReason)
+  Failed(FailureClass)
+} derive(Eq, @debug.Debug)
+
+pub struct SamplingIdentity {
+  // private fields
+} derive(Eq, @debug.Debug)
+pub fn SamplingIdentity::new(plan_digest~ : @identity.Sha256Digest, seed~ : UInt64) -> Self
+pub fn SamplingIdentity::plan_digest(Self) -> @identity.Sha256Digest
+pub fn SamplingIdentity::seed(Self) -> UInt64
+
+pub struct ScoreRequestId {
+  // private fields
+} derive(Eq, @debug.Debug)
+pub fn ScoreRequestId::digest(Self) -> @identity.Sha256Digest
+pub fn ScoreRequestId::new(@identity.Sha256Digest) -> Self
+
+pub(all) enum ScoreTarget {
+  Policy(@identity.PolicyGeneration)
+  Reference(@identity.Sha256Digest)
+} derive(Eq, @debug.Debug)
+
+pub struct TeacherScoreEvidence {
+  // private fields
+}
+pub fn TeacherScoreEvidence::as_policy_score(Self, @trajectory.Trajectory) -> @reward.PolicyScoreEvidence raise RolloutProtocolError
+pub fn TeacherScoreEvidence::as_reference_score(Self, @trajectory.Trajectory) -> @reward.ReferenceScoreEvidence raise RolloutProtocolError
+pub fn TeacherScoreEvidence::new(protocol_version~ : @version.ProtocolVersion, request_id~ : ScoreRequestId, rollout_id~ : @identity.RolloutId, source_actor~ : @identity.PolicyGeneration, tokenizer~ : @experiment.TokenizerIdentity, target~ : ScoreTarget, token_scores~ : ArrayView[TeacherTokenScore], expected_request~ : TeacherScoreRequest) -> Self raise RolloutProtocolError
+pub fn TeacherScoreEvidence::protocol_version(Self) -> @version.ProtocolVersion
+pub fn TeacherScoreEvidence::request_id(Self) -> ScoreRequestId
+pub fn TeacherScoreEvidence::rollout_id(Self) -> @identity.RolloutId
+pub fn TeacherScoreEvidence::source_actor(Self) -> @identity.PolicyGeneration
+pub fn TeacherScoreEvidence::target(Self) -> ScoreTarget
+pub fn TeacherScoreEvidence::token_count(Self) -> Int
+pub fn TeacherScoreEvidence::token_score_at(Self, Int) -> TeacherTokenScore raise RolloutProtocolError
+pub fn TeacherScoreEvidence::tokenizer(Self) -> @experiment.TokenizerIdentity
+
+pub struct TeacherScoreRequest {
+  // private fields
+}
+pub fn TeacherScoreRequest::new(protocol_version~ : @version.ProtocolVersion, request_id~ : ScoreRequestId, rollout~ : RolloutResponse, target~ : ScoreTarget) -> Self raise RolloutProtocolError
+pub fn TeacherScoreRequest::protocol_version(Self) -> @version.ProtocolVersion
+pub fn TeacherScoreRequest::request_id(Self) -> ScoreRequestId
+pub fn TeacherScoreRequest::rollout(Self) -> RolloutResponse
+pub fn TeacherScoreRequest::target(Self) -> ScoreTarget
+
+pub struct TeacherTokenScore {
+  // private fields
+} derive(Eq, @debug.Debug)
+pub fn TeacherTokenScore::environment() -> Self
+pub fn TeacherTokenScore::is_scored(Self) -> Bool
+pub fn TeacherTokenScore::model(model_logprob~ : Double) -> Self raise RolloutProtocolError
+pub fn TeacherTokenScore::model_logprob(Self) -> Double?
+
+// Type aliases
+
+// Traits

@@ -1,0 +1,76 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vectie/lunarein/protocols/trainer"
+
+import {
+  "moonbitlang/core/debug",
+  "vectie/lunarein/contracts/update",
+  "vectie/lunarein/protocols/version",
+}
+
+// Values
+
+// Errors
+pub(all) suberror TrainerProtocolError {
+  InvalidRequestId
+  InvalidState(expected~ : TrainerState, actual~ : TrainerState)
+  BatchMismatch
+  PolicyMismatch
+  CandidateMismatch
+  UnsupportedVersion
+} derive(Eq, @debug.Debug)
+
+// Types and methods
+pub(all) enum TrainerFailure {
+  BackendUnavailable
+  ResourceExhausted
+  NumericalFailure
+  Cancelled
+} derive(Eq, @debug.Debug)
+
+pub(all) enum TrainerState {
+  Prepared
+  Dispatched
+  ResultAccepted
+  Completed
+  Failed
+} derive(Eq, @debug.Debug)
+
+pub struct TrainerStepResult {
+  // private fields
+}
+pub fn TrainerStepResult::candidate(Self) -> @update.CandidatePolicy
+pub fn TrainerStepResult::evidence(Self) -> @update.OptimizerStepEvidence
+pub fn TrainerStepResult::new(request~ : TrainingRequest, evidence~ : @update.OptimizerStepEvidence, candidate~ : @update.CandidatePolicy) -> Self raise TrainerProtocolError
+pub fn TrainerStepResult::request_id(Self) -> TrainingRequestId
+
+pub struct TrainerTransaction {
+  // private fields
+}
+pub fn TrainerTransaction::accept_result(Self, TrainerStepResult) -> Unit raise TrainerProtocolError
+pub fn TrainerTransaction::complete(Self) -> Unit raise TrainerProtocolError
+pub fn TrainerTransaction::dispatch(Self) -> Unit raise TrainerProtocolError
+pub fn TrainerTransaction::fail(Self, TrainerFailure) -> Unit raise TrainerProtocolError
+pub fn TrainerTransaction::failure(Self) -> TrainerFailure?
+pub fn TrainerTransaction::new(TrainingRequest) -> Self
+pub fn TrainerTransaction::request(Self) -> TrainingRequest
+pub fn TrainerTransaction::result(Self) -> TrainerStepResult?
+pub fn TrainerTransaction::state(Self) -> TrainerState
+
+pub struct TrainingRequest {
+  // private fields
+}
+pub fn TrainingRequest::batch(Self) -> @update.TrainingBatch
+pub fn TrainingRequest::id(Self) -> TrainingRequestId
+pub fn TrainingRequest::new(id~ : TrainingRequestId, batch~ : @update.TrainingBatch) -> Self
+pub fn TrainingRequest::new_versioned(version~ : @version.ProtocolVersion, id~ : TrainingRequestId, batch~ : @update.TrainingBatch) -> Self raise TrainerProtocolError
+pub fn TrainingRequest::version(Self) -> @version.ProtocolVersion
+
+pub struct TrainingRequestId {
+  // private fields
+} derive(Eq, @debug.Debug)
+pub fn TrainingRequestId::new(UInt64) -> Self raise TrainerProtocolError
+pub fn TrainingRequestId::value(Self) -> UInt64
+
+// Type aliases
+
+// Traits

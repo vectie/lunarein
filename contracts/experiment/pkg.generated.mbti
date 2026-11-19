@@ -1,0 +1,117 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vectie/lunarein/contracts/experiment"
+
+import {
+  "moonbitlang/core/debug",
+  "vectie/lunarein/contracts/identity",
+}
+
+// Values
+
+// Errors
+pub(all) suberror ExperimentError {
+  InvalidCapacity(kind~ : CapacityKind, value~ : UInt64, maximum~ : UInt64)
+} derive(Eq, @debug.Debug)
+
+// Types and methods
+pub struct AlgorithmIdentity {
+  // private fields
+} derive(Eq, @debug.Debug)
+pub fn AlgorithmIdentity::digest(Self) -> @identity.Sha256Digest
+pub fn AlgorithmIdentity::kind(Self) -> AlgorithmKind
+pub fn AlgorithmIdentity::new(@identity.Sha256Digest, AlgorithmKind) -> Self
+
+pub(all) enum AlgorithmKind {
+  Reinforce
+  ReinforceReferenceKl
+  Grpo
+  GaePpo
+} derive(Eq, @debug.Debug)
+
+pub(all) enum CapacityKind {
+  ConcurrentGroups
+  RolloutsPerGroup
+  PromptTokens
+  ResponseTokens
+  PendingUpdates
+} derive(Eq, @debug.Debug)
+
+pub struct ConcurrentGroupCapacity {
+  // private fields
+} derive(Eq, @debug.Debug)
+pub fn ConcurrentGroupCapacity::new(UInt64) -> Self raise ExperimentError
+pub fn ConcurrentGroupCapacity::value(Self) -> UInt64
+
+pub struct DatasetIdentity {
+  // private fields
+} derive(Eq, @debug.Debug)
+pub fn DatasetIdentity::digest(Self) -> @identity.Sha256Digest
+pub fn DatasetIdentity::new(@identity.Sha256Digest) -> Self
+
+pub struct ExperimentIdentity {
+  // private fields
+} derive(Eq, @debug.Debug)
+pub fn ExperimentIdentity::digest(Self) -> @identity.Sha256Digest
+pub fn ExperimentIdentity::new(@identity.Sha256Digest) -> Self
+
+pub struct ExperimentLimits {
+  // private fields
+} derive(Eq, @debug.Debug)
+pub fn ExperimentLimits::concurrent_groups(Self) -> ConcurrentGroupCapacity
+pub fn ExperimentLimits::new(concurrent_groups~ : ConcurrentGroupCapacity, rollouts_per_group~ : RolloutsPerGroupCapacity, prompt_tokens~ : PromptTokenCapacity, response_tokens~ : ResponseTokenCapacity, pending_updates~ : PendingUpdateCapacity) -> Self
+pub fn ExperimentLimits::pending_updates(Self) -> PendingUpdateCapacity
+pub fn ExperimentLimits::prompt_tokens(Self) -> PromptTokenCapacity
+pub fn ExperimentLimits::response_tokens(Self) -> ResponseTokenCapacity
+pub fn ExperimentLimits::rollouts_per_group(Self) -> RolloutsPerGroupCapacity
+
+pub struct ExperimentManifest {
+  // private fields
+} derive(Eq, @debug.Debug)
+pub fn ExperimentManifest::actor(Self) -> @identity.PolicyGeneration
+pub fn ExperimentManifest::algorithm(Self) -> AlgorithmIdentity
+pub fn ExperimentManifest::dataset(Self) -> DatasetIdentity
+pub fn ExperimentManifest::identity(Self) -> ExperimentIdentity
+pub fn ExperimentManifest::limits(Self) -> ExperimentLimits
+pub fn ExperimentManifest::new(identity~ : ExperimentIdentity, actor~ : @identity.PolicyGeneration, dataset~ : DatasetIdentity, reward_policy~ : RewardPolicyIdentity, tokenizer~ : TokenizerIdentity, algorithm~ : AlgorithmIdentity, limits~ : ExperimentLimits) -> Self
+pub fn ExperimentManifest::reward_policy(Self) -> RewardPolicyIdentity
+pub fn ExperimentManifest::tokenizer(Self) -> TokenizerIdentity
+
+pub struct PendingUpdateCapacity {
+  // private fields
+} derive(Eq, @debug.Debug)
+pub fn PendingUpdateCapacity::new(UInt64) -> Self raise ExperimentError
+pub fn PendingUpdateCapacity::value(Self) -> UInt64
+
+pub struct PromptTokenCapacity {
+  // private fields
+} derive(Eq, @debug.Debug)
+pub fn PromptTokenCapacity::new(UInt64) -> Self raise ExperimentError
+pub fn PromptTokenCapacity::value(Self) -> UInt64
+
+pub struct ResponseTokenCapacity {
+  // private fields
+} derive(Eq, @debug.Debug)
+pub fn ResponseTokenCapacity::new(UInt64) -> Self raise ExperimentError
+pub fn ResponseTokenCapacity::value(Self) -> UInt64
+
+pub struct RewardPolicyIdentity {
+  // private fields
+} derive(Eq, @debug.Debug)
+pub fn RewardPolicyIdentity::digest(Self) -> @identity.Sha256Digest
+pub fn RewardPolicyIdentity::new(@identity.Sha256Digest) -> Self
+
+pub struct RolloutsPerGroupCapacity {
+  // private fields
+} derive(Eq, @debug.Debug)
+pub fn RolloutsPerGroupCapacity::new(UInt64) -> Self raise ExperimentError
+pub fn RolloutsPerGroupCapacity::value(Self) -> UInt64
+
+pub struct TokenizerIdentity {
+  // private fields
+} derive(Eq, @debug.Debug)
+pub fn TokenizerIdentity::digest(Self) -> @identity.Sha256Digest
+pub fn TokenizerIdentity::new(@identity.Sha256Digest) -> Self
+
+// Type aliases
+
+// Traits

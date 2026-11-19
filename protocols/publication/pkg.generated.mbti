@@ -1,0 +1,135 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vectie/lunarein/protocols/publication"
+
+import {
+  "moonbitlang/core/debug",
+  "vectie/lunarein/contracts/identity",
+  "vectie/lunarein/contracts/update",
+  "vectie/lunarein/protocols/version",
+}
+
+// Values
+
+// Errors
+pub(all) suberror PublicationError {
+  InvalidPublicationId
+  InvalidLimit
+  InvalidChunkIndex
+  InvalidRank
+  ManifestMismatch
+  ReservationMismatch
+  DuplicateChunk
+  ArtifactDigestMismatch
+  DuplicateRankAcknowledgement
+  AcknowledgementMismatch
+  DeltaTransportUnsupported
+  UnsupportedVersion
+  InvalidState(expected~ : PublicationState, actual~ : PublicationState)
+} derive(Eq, @debug.Debug)
+
+// Types and methods
+pub struct ArtifactChunkEvidence {
+  // private fields
+}
+pub fn ArtifactChunkEvidence::chunk_digest(Self) -> @identity.Sha256Digest
+pub fn ArtifactChunkEvidence::index(Self) -> Int
+pub fn ArtifactChunkEvidence::length(Self) -> Int
+pub fn ArtifactChunkEvidence::new(manifest~ : FullArtifactManifest, index~ : Int, chunk_digest~ : @identity.Sha256Digest) -> Self raise PublicationError
+pub fn ArtifactChunkEvidence::offset(Self) -> Int64
+pub fn ArtifactChunkEvidence::publication_id(Self) -> PublicationId
+pub fn ArtifactChunkEvidence::target(Self) -> @identity.PolicyGeneration
+
+pub struct FullArtifactManifest {
+  // private fields
+}
+pub fn FullArtifactManifest::artifact_digest(Self) -> @identity.Sha256Digest
+pub fn FullArtifactManifest::candidate(Self) -> @update.CandidatePolicy
+pub fn FullArtifactManifest::chunk_bytes(Self) -> Int
+pub fn FullArtifactManifest::chunk_count(Self) -> Int
+pub fn FullArtifactManifest::chunk_length(Self, Int) -> Int raise PublicationError
+pub fn FullArtifactManifest::chunk_offset(Self, Int) -> Int64 raise PublicationError
+pub fn FullArtifactManifest::format(Self) -> PolicyArtifactFormat
+pub fn FullArtifactManifest::id(Self) -> PublicationId
+pub fn FullArtifactManifest::new(id~ : PublicationId, candidate~ : @update.CandidatePolicy, total_bytes~ : Int64, chunk_bytes~ : Int, maximum_chunk_bytes~ : Int, rollout_rank_count~ : Int, maximum_artifact_bytes~ : Int64, maximum_chunks~ : Int, maximum_rollout_ranks~ : Int) -> Self raise PublicationError
+pub fn FullArtifactManifest::new_versioned(version~ : @version.ProtocolVersion, id~ : PublicationId, candidate~ : @update.CandidatePolicy, total_bytes~ : Int64, chunk_bytes~ : Int, maximum_chunk_bytes~ : Int, rollout_rank_count~ : Int, maximum_artifact_bytes~ : Int64, maximum_chunks~ : Int, maximum_rollout_ranks~ : Int) -> Self raise PublicationError
+pub fn FullArtifactManifest::parent(Self) -> @identity.PolicyGeneration
+pub fn FullArtifactManifest::rollout_rank_count(Self) -> Int
+pub fn FullArtifactManifest::target(Self) -> @identity.PolicyGeneration
+pub fn FullArtifactManifest::tensor_vocabulary_digest(Self) -> @identity.Sha256Digest
+pub fn FullArtifactManifest::total_bytes(Self) -> Int64
+pub fn FullArtifactManifest::version(Self) -> @version.ProtocolVersion
+
+pub(all) enum PolicyArtifactFormat {
+  SafetensorsV1
+} derive(Eq, @debug.Debug)
+
+pub struct PublicationId {
+  // private fields
+} derive(Eq, @debug.Debug)
+pub fn PublicationId::new(UInt64) -> Self raise PublicationError
+pub fn PublicationId::value(Self) -> UInt64
+
+pub struct PublicationOwner {
+  // private fields
+}
+pub fn PublicationOwner::abort(Self) -> Unit raise PublicationError
+pub fn PublicationOwner::accept_acknowledgement(Self, RolloutRankAcknowledgement) -> Unit raise PublicationError
+pub fn PublicationOwner::accept_chunk(Self, ArtifactChunkEvidence) -> Unit raise PublicationError
+pub fn PublicationOwner::accept_reservation(Self, ReservationEvidence) -> Unit raise PublicationError
+pub fn PublicationOwner::accepted_chunk_count(Self) -> Int
+pub fn PublicationOwner::acknowledgement_count(Self) -> Int
+pub fn PublicationOwner::begin_transport(Self, PublicationTransport) -> Unit raise PublicationError
+pub fn PublicationOwner::commit(Self) -> Unit raise PublicationError
+pub fn PublicationOwner::conflicting_digest(Self) -> @identity.Sha256Digest?
+pub fn PublicationOwner::manifest(Self) -> FullArtifactManifest
+pub fn PublicationOwner::new(FullArtifactManifest) -> Self
+pub fn PublicationOwner::state(Self) -> PublicationState
+pub fn PublicationOwner::verify_artifact(Self, @identity.Sha256Digest) -> Unit raise PublicationError
+
+pub(all) enum PublicationState {
+  AwaitingReservation
+  AwaitingTransport
+  TransferringFullArtifact
+  VerifyingArtifact
+  AwaitingRankAcknowledgements
+  AwaitingRecoveredRankAcknowledgements
+  ReadyToCommit
+  Committed
+  TargetConflict
+  Aborted
+} derive(Eq, @debug.Debug)
+
+pub(all) enum PublicationTransport {
+  FullArtifactV1
+  DeltaDeferred
+} derive(Eq, @debug.Debug)
+
+pub struct ReservationEvidence {
+  // private fields
+}
+pub fn ReservationEvidence::artifact_digest(Self) -> @identity.Sha256Digest
+pub fn ReservationEvidence::existing(FullArtifactManifest, @identity.Sha256Digest) -> Self
+pub fn ReservationEvidence::existing_digest(Self) -> @identity.Sha256Digest?
+pub fn ReservationEvidence::outcome(Self) -> ReservationOutcome
+pub fn ReservationEvidence::publication_id(Self) -> PublicationId
+pub fn ReservationEvidence::reserved(FullArtifactManifest) -> Self
+pub fn ReservationEvidence::target(Self) -> @identity.PolicyGeneration
+
+pub(all) enum ReservationOutcome {
+  EmptyTargetReserved
+  ExistingCandidateResumed
+  ExistingTargetRefused
+} derive(Eq, @debug.Debug)
+
+pub struct RolloutRankAcknowledgement {
+  // private fields
+}
+pub fn RolloutRankAcknowledgement::artifact_digest(Self) -> @identity.Sha256Digest
+pub fn RolloutRankAcknowledgement::new(manifest~ : FullArtifactManifest, rank~ : Int, observed_artifact_digest~ : @identity.Sha256Digest) -> Self raise PublicationError
+pub fn RolloutRankAcknowledgement::publication_id(Self) -> PublicationId
+pub fn RolloutRankAcknowledgement::rank(Self) -> Int
+pub fn RolloutRankAcknowledgement::target(Self) -> @identity.PolicyGeneration
+
+// Type aliases
+
+// Traits

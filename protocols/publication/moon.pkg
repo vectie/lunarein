@@ -1,0 +1,5 @@
+import {
+  "vectie/lunarein/contracts/identity",
+  "vectie/lunarein/contracts/update",
+  "vectie/lunarein/protocols/version",
+}

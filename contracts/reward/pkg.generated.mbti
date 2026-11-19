@@ -1,0 +1,76 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vectie/lunarein/contracts/reward"
+
+import {
+  "moonbitlang/core/debug",
+  "vectie/lunarein/contracts/identity",
+  "vectie/lunarein/contracts/trajectory",
+}
+
+// Values
+
+// Errors
+pub(all) suberror RewardError {
+  NonFiniteScalarReward
+  TokenRewardLengthMismatch
+  NonFiniteTokenReward(index~ : Int)
+  ReferenceScoreLengthMismatch
+  InvalidReferenceScore(index~ : Int)
+  InconsistentReferenceScore(index~ : Int)
+  IneligibleTerminal
+  InvalidIndex(index~ : Int)
+  Trajectory(@trajectory.TrajectoryError)
+} derive(Eq, @debug.Debug)
+
+// Types and methods
+pub struct PolicyScoreEvidence {
+  // private fields
+}
+pub fn PolicyScoreEvidence::logprob_at(Self, Int) -> Double? raise RewardError
+pub fn PolicyScoreEvidence::new(@trajectory.Trajectory, target_policy~ : @identity.PolicyGeneration, logprobs~ : ArrayView[Double?]) -> Self raise RewardError
+pub fn PolicyScoreEvidence::source_policy(Self) -> @identity.PolicyGeneration
+pub fn PolicyScoreEvidence::target_policy(Self) -> @identity.PolicyGeneration
+pub fn PolicyScoreEvidence::token_count(Self) -> Int
+pub fn PolicyScoreEvidence::trajectory_identity(Self) -> @trajectory.TrajectoryEvidenceIdentity
+
+pub struct ReferenceScoreEvidence {
+  // private fields
+}
+pub fn ReferenceScoreEvidence::logprob_at(Self, Int) -> Double? raise RewardError
+pub fn ReferenceScoreEvidence::new(@trajectory.Trajectory, reference_actor~ : @identity.Sha256Digest, logprobs~ : ArrayView[Double?]) -> Self raise RewardError
+pub fn ReferenceScoreEvidence::policy(Self) -> @identity.PolicyGeneration
+pub fn ReferenceScoreEvidence::reference_actor(Self) -> @identity.Sha256Digest
+pub fn ReferenceScoreEvidence::rollout_id(Self) -> @identity.RolloutId
+pub fn ReferenceScoreEvidence::token_count(Self) -> Int
+pub fn ReferenceScoreEvidence::trajectory_identity(Self) -> @trajectory.TrajectoryEvidenceIdentity
+
+pub struct RewardSourceId {
+  // private fields
+} derive(Eq, @debug.Debug)
+pub fn RewardSourceId::digest(Self) -> @identity.Sha256Digest
+pub fn RewardSourceId::new(@identity.Sha256Digest) -> Self
+
+pub struct ScalarRewardEvidence {
+  // private fields
+}
+pub fn ScalarRewardEvidence::new(@trajectory.Trajectory, source~ : RewardSourceId, value~ : Double) -> Self raise RewardError
+pub fn ScalarRewardEvidence::policy(Self) -> @identity.PolicyGeneration
+pub fn ScalarRewardEvidence::rollout_id(Self) -> @identity.RolloutId
+pub fn ScalarRewardEvidence::source(Self) -> RewardSourceId
+pub fn ScalarRewardEvidence::trajectory_identity(Self) -> @trajectory.TrajectoryEvidenceIdentity
+pub fn ScalarRewardEvidence::value(Self) -> Double
+
+pub struct TokenRewardEvidence {
+  // private fields
+}
+pub fn TokenRewardEvidence::new(@trajectory.Trajectory, source~ : RewardSourceId, values~ : ArrayView[Double]) -> Self raise RewardError
+pub fn TokenRewardEvidence::policy(Self) -> @identity.PolicyGeneration
+pub fn TokenRewardEvidence::rollout_id(Self) -> @identity.RolloutId
+pub fn TokenRewardEvidence::source(Self) -> RewardSourceId
+pub fn TokenRewardEvidence::token_count(Self) -> Int
+pub fn TokenRewardEvidence::trajectory_identity(Self) -> @trajectory.TrajectoryEvidenceIdentity
+pub fn TokenRewardEvidence::value_at(Self, Int) -> Double raise RewardError
+
+// Type aliases
+
+// Traits

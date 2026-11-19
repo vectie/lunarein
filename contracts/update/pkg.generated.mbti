@@ -1,0 +1,96 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vectie/lunarein/contracts/update"
+
+import {
+  "moonbitlang/core/debug",
+  "vectie/lunarein/contracts/identity",
+  "vectie/lunarein/contracts/trajectory",
+}
+
+// Values
+
+// Errors
+pub(all) suberror UpdateError {
+  InvalidBatchId
+  InvalidStepId
+  InvalidLimit
+  InvalidTokenCount
+  EmptyBatch
+  ForeignPolicy
+  DuplicateRollout
+  NonCanonicalRolloutOrder
+  TotalTokenLimitExceeded
+  TrainableTokenLimitExceeded
+  BrokenPolicyLineage
+  CandidateDigestMismatch
+  StepTokenMismatch
+  NonFiniteMeanLoss
+  NonFiniteTrainingTarget(index~ : Int)
+  NonzeroEnvironmentTarget(index~ : Int)
+} derive(Eq, @debug.Debug)
+
+// Types and methods
+pub struct CandidatePolicy {
+  // private fields
+}
+pub fn CandidatePolicy::artifact_digest(Self) -> @identity.Sha256Digest
+pub fn CandidatePolicy::new(parent~ : @identity.PolicyGeneration, target~ : @identity.PolicyGeneration, artifact_digest~ : @identity.Sha256Digest, tensor_vocabulary_digest~ : @identity.Sha256Digest) -> Self raise UpdateError
+pub fn CandidatePolicy::parent(Self) -> @identity.PolicyGeneration
+pub fn CandidatePolicy::target(Self) -> @identity.PolicyGeneration
+pub fn CandidatePolicy::tensor_vocabulary_digest(Self) -> @identity.Sha256Digest
+
+pub struct OptimizerStepEvidence {
+  // private fields
+}
+pub fn OptimizerStepEvidence::batch_id(Self) -> TrainingBatchId
+pub fn OptimizerStepEvidence::candidate_digest(Self) -> @identity.Sha256Digest
+pub fn OptimizerStepEvidence::mean_loss(Self) -> Double
+pub fn OptimizerStepEvidence::new(step_id~ : OptimizerStepId, batch~ : TrainingBatch, candidate~ : CandidatePolicy, optimizer_state_digest~ : @identity.Sha256Digest, trained_token_count~ : Int, mean_loss~ : Double) -> Self raise UpdateError
+pub fn OptimizerStepEvidence::optimizer_state_digest(Self) -> @identity.Sha256Digest
+pub fn OptimizerStepEvidence::parent(Self) -> @identity.PolicyGeneration
+pub fn OptimizerStepEvidence::step_id(Self) -> OptimizerStepId
+pub fn OptimizerStepEvidence::target(Self) -> @identity.PolicyGeneration
+pub fn OptimizerStepEvidence::trained_token_count(Self) -> Int
+
+pub struct OptimizerStepId {
+  // private fields
+} derive(Eq, @debug.Debug)
+pub fn OptimizerStepId::new(UInt64) -> Self raise UpdateError
+pub fn OptimizerStepId::value(Self) -> UInt64
+
+pub struct TrainingBatch {
+  // private fields
+}
+pub fn TrainingBatch::id(Self) -> TrainingBatchId
+pub fn TrainingBatch::item_at(Self, Int) -> TrainingItemRef raise UpdateError
+pub fn TrainingBatch::item_count(Self) -> Int
+pub fn TrainingBatch::new(id~ : TrainingBatchId, policy~ : @identity.PolicyGeneration, items~ : ArrayView[TrainingItemRef], maximum_items~ : Int, maximum_total_tokens~ : Int, maximum_trainable_tokens~ : Int) -> Self raise UpdateError
+pub fn TrainingBatch::policy(Self) -> @identity.PolicyGeneration
+pub fn TrainingBatch::total_token_count(Self) -> Int
+pub fn TrainingBatch::trainable_token_count(Self) -> Int
+
+pub struct TrainingBatchId {
+  // private fields
+} derive(Eq, @debug.Debug)
+pub fn TrainingBatchId::new(UInt64) -> Self raise UpdateError
+pub fn TrainingBatchId::value(Self) -> UInt64
+
+pub struct TrainingItemRef {
+  // private fields
+}
+pub fn TrainingItemRef::corrected(trajectory~ : @trajectory.TrajectoryEvidenceIdentity, training_policy~ : @identity.PolicyGeneration, target_values~ : ArrayView[Double]) -> Self raise UpdateError
+pub fn TrainingItemRef::has_value_returns(Self) -> Bool
+pub fn TrainingItemRef::new(trajectory~ : @trajectory.TrajectoryEvidenceIdentity, target_values~ : ArrayView[Double]) -> Self raise UpdateError
+pub fn TrainingItemRef::policy(Self) -> @identity.PolicyGeneration
+pub fn TrainingItemRef::ppo(trajectory~ : @trajectory.TrajectoryEvidenceIdentity, advantages~ : ArrayView[Double], value_returns~ : ArrayView[Double]) -> Self raise UpdateError
+pub fn TrainingItemRef::rollout_id(Self) -> @identity.RolloutId
+pub fn TrainingItemRef::source_policy(Self) -> @identity.PolicyGeneration
+pub fn TrainingItemRef::target_value_at(Self, Int) -> Double raise UpdateError
+pub fn TrainingItemRef::token_count(Self) -> Int
+pub fn TrainingItemRef::trainable_token_count(Self) -> Int
+pub fn TrainingItemRef::trajectory_identity(Self) -> @trajectory.TrajectoryEvidenceIdentity
+pub fn TrainingItemRef::value_return_at(Self, Int) -> Double? raise UpdateError
+
+// Type aliases
+
+// Traits

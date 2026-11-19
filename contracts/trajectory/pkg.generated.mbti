@@ -1,0 +1,73 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vectie/lunarein/contracts/trajectory"
+
+import {
+  "moonbitlang/core/debug",
+  "vectie/lunarein/contracts/identity",
+}
+
+// Values
+
+// Errors
+pub(all) suberror TrajectoryError {
+  InvalidLimit
+  EmptyPrompt
+  EmptyResponse
+  InvalidTokenId(index~ : Int)
+  InvalidLogProbability(index~ : Int)
+  InconsistentTokenEvidence(index~ : Int)
+  InvalidTerminal
+} derive(Eq, @debug.Debug)
+
+// Types and methods
+pub struct RolloutToken {
+  // private fields
+}
+pub fn RolloutToken::environment(token_id~ : Int, maximum_token_id~ : Int) -> Self raise TrajectoryError
+pub fn RolloutToken::is_trainable(Self) -> Bool
+pub fn RolloutToken::model(token_id~ : Int, model_logprob~ : Double, sampling_logprob~ : Double, maximum_token_id~ : Int) -> Self raise TrajectoryError
+pub fn RolloutToken::model_logprob(Self) -> Double?
+pub fn RolloutToken::origin(Self) -> TokenOrigin
+pub fn RolloutToken::sampling_logprob(Self) -> Double?
+pub fn RolloutToken::token_id(Self) -> Int
+
+pub(all) enum TokenOrigin {
+  ModelGenerated
+  EnvironmentSupplied
+} derive(Eq, @debug.Debug)
+
+pub struct Trajectory {
+  // private fields
+}
+pub fn Trajectory::evidence_identity(Self) -> TrajectoryEvidenceIdentity
+pub fn Trajectory::group_id(Self) -> @identity.GroupId
+pub fn Trajectory::new(rollout_id~ : @identity.RolloutId, group_id~ : @identity.GroupId, policy~ : @identity.PolicyGeneration, prompt_tokens~ : ArrayView[Int], response_tokens~ : ArrayView[RolloutToken], terminal~ : TrajectoryTerminal, maximum_prompt_tokens~ : Int, maximum_response_tokens~ : Int, maximum_token_id~ : Int) -> Self raise TrajectoryError
+pub fn Trajectory::policy(Self) -> @identity.PolicyGeneration
+pub fn Trajectory::prompt_length(Self) -> Int
+pub fn Trajectory::prompt_token_at(Self, Int) -> Int raise TrajectoryError
+pub fn Trajectory::response_length(Self) -> Int
+pub fn Trajectory::response_token_at(Self, Int) -> RolloutToken raise TrajectoryError
+pub fn Trajectory::rollout_id(Self) -> @identity.RolloutId
+pub fn Trajectory::terminal(Self) -> TrajectoryTerminal
+
+pub struct TrajectoryEvidenceIdentity {
+  // private fields
+}
+pub fn TrajectoryEvidenceIdentity::group_id(Self) -> @identity.GroupId
+pub fn TrajectoryEvidenceIdentity::is_trainable_at(Self, Int) -> Bool raise TrajectoryError
+pub fn TrajectoryEvidenceIdentity::matches_trajectory(Self, Trajectory) -> Bool
+pub fn TrajectoryEvidenceIdentity::policy(Self) -> @identity.PolicyGeneration
+pub fn TrajectoryEvidenceIdentity::response_length(Self) -> Int
+pub fn TrajectoryEvidenceIdentity::rollout_id(Self) -> @identity.RolloutId
+pub fn TrajectoryEvidenceIdentity::same(Self, Self) -> Bool
+
+pub(all) enum TrajectoryTerminal {
+  Completed
+  Truncated
+  Cancelled
+  Failed
+} derive(Eq, @debug.Debug)
+
+// Type aliases
+
+// Traits

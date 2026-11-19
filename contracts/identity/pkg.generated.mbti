@@ -1,0 +1,51 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vectie/lunarein/contracts/identity"
+
+import {
+  "moonbitlang/core/debug",
+}
+
+// Values
+
+// Errors
+pub(all) suberror IdentityError {
+  InvalidDigestLength
+  InvalidDigestByte(index~ : Int)
+  InvalidSequence
+  InvalidLineage
+  InvalidRolloutId
+  InvalidGroupId
+} derive(Eq, @debug.Debug)
+
+// Types and methods
+pub struct GroupId {
+  // private fields
+} derive(Eq, @debug.Debug)
+pub fn GroupId::new(UInt64) -> Self raise IdentityError
+pub fn GroupId::value(Self) -> UInt64
+
+pub struct PolicyGeneration {
+  // private fields
+} derive(Eq, @debug.Debug)
+pub fn PolicyGeneration::actor(Self) -> Sha256Digest
+pub fn PolicyGeneration::follows(Self, Self) -> Bool
+pub fn PolicyGeneration::initial(Sha256Digest) -> Self
+pub fn PolicyGeneration::new(sequence~ : UInt64, actor~ : Sha256Digest, parent_actor~ : Sha256Digest?) -> Self raise IdentityError
+pub fn PolicyGeneration::parent_actor(Self) -> Sha256Digest?
+pub fn PolicyGeneration::sequence(Self) -> UInt64
+
+pub struct RolloutId {
+  // private fields
+} derive(Eq, @debug.Debug)
+pub fn RolloutId::new(UInt64) -> Self raise IdentityError
+pub fn RolloutId::value(Self) -> UInt64
+
+pub struct Sha256Digest {
+  // private fields
+} derive(Eq, @debug.Debug)
+pub fn Sha256Digest::as_string(Self) -> String
+pub fn Sha256Digest::parse(String) -> Self raise IdentityError
+
+// Type aliases
+
+// Traits
